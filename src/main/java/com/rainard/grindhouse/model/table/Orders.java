@@ -1,23 +1,29 @@
 package com.rainard.grindhouse.model.table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "orders")
 public class Orders {
     @GeneratedValue
     @Id
     private int id;
-    private int fk_emp_id;
-    private int fk_cust_id;
+    @Column(name = "fk_emp_id")
+    private int fkEmpId;
+    @Column(name = "fk_cust_id")
+    private int fkCustId;
     private String state;
-    private Timestamp time_start;
-    private Timestamp time_stop;
+    @Column(name = "time_start")
+    private Timestamp timeStart;
+    @Column(name = "time_stop")
+    private Timestamp timeStop;
     private double total;
 }

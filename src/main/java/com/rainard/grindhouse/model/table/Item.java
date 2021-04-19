@@ -1,20 +1,25 @@
 package com.rainard.grindhouse.model.table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "item")
 public class Item {
     @GeneratedValue
     @Id
     private int id;
-    private int fk_coffee_id;
-    private int fk_order_id;
+    @Column(name = "fk_coffee_id")
+    private int fkCoffeeId;
+    @Column(name = "fk_order_id")
+    private int fkOrderId;
     private int quantity;
     private boolean milk;
     private boolean sugar;

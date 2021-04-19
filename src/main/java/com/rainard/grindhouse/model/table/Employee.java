@@ -1,19 +1,26 @@
 package com.rainard.grindhouse.model.table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "employee")
 public class Employee {
     @GeneratedValue
     @Id
     private int id;
-    private String emp_number;
-    private String emp_password;
-    private String emp_name;
+    @Column(name = "emp_number")
+    private String empNumber;
+    @Column(name = "emp_password")
+    private String empPassword;
+    @Column(name = "emp_name")
+    private String empName;
+    private Boolean isLoggedIn;
 }

@@ -1,6 +1,6 @@
 package com.rainard.grindhouse.controller;
 
-import com.rainard.grindhouse.dao.OrderDao;
+import com.rainard.grindhouse.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class OrderController {
     @Autowired
-    private OrderDao orderDao;
+    private OrderRepository orderRepository;
 
     @GetMapping("order/view/{emp_id}/order_id")
     public String viewOrder(@RequestParam String emp_id, @RequestParam String order_id) {
