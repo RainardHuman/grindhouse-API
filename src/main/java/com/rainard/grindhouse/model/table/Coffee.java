@@ -1,4 +1,4 @@
-package com.rainard.grindhouse.model;
+package com.rainard.grindhouse.model.table;
 
 import lombok.Data;
 import javax.persistence.Entity;
