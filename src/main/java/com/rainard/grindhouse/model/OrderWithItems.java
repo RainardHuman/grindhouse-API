@@ -1,11 +1,11 @@
 package com.rainard.grindhouse.model;
 
 import com.rainard.grindhouse.model.table.Item;
+import com.rainard.grindhouse.model.table.Orders;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.criterion.Order;
 
 import java.util.List;
 
@@ -14,6 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderWithItems {
-    private Order order;
-    private List<Item> order_items;
+    private Orders order;
+    private List<Item> orderItems;
 }
