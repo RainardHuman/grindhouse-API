@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @RestController()
 public class AuthController {
     @Autowired
@@ -38,8 +37,8 @@ public class AuthController {
             coffeeRepository.findAll().iterator().forEachRemaining(coffees::add);
             LoginResponse response = LoginResponse.builder()
                     .coffees(coffees)
-                    .employee_id(employee.getId())
-                    .employee_name(employee.getEmpName())
+                    .employeeId(employee.getId())
+                    .employeeName(employee.getEmpName())
                     .build();
             AuditLog auditLog = AuditLog.builder()
                     .empId(employee.getId())

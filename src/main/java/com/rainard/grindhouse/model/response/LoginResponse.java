@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class LoginResponse {
-    private int employee_id;
-    private String employee_name;
+    private int employeeId;
+    private String employeeName;
     private List<Coffee> coffees;
 }

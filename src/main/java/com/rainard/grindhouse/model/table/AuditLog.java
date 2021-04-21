@@ -18,7 +18,7 @@ public class AuditLog {
     @GeneratedValue
     @Id
     private int Id;
-    @Column(name = "emp_id")
+    @Column(name = "fk_emp_id")
     private int empId;
     @Column(name = "action_type")
     private String actionType;
