@@ -2,13 +2,11 @@ package com.rainard.grindhouse.controller;
 
 import com.rainard.grindhouse.model.response.FailResponse;
 import com.rainard.grindhouse.model.response.LoginResponse;
-import com.rainard.grindhouse.model.table.AuditLog;
-import com.rainard.grindhouse.model.table.Coffee;
-import com.rainard.grindhouse.model.table.Employee;
-import com.rainard.grindhouse.repository.AuditLogRepository;
-import com.rainard.grindhouse.repository.CoffeeRepository;
-import com.rainard.grindhouse.repository.EmployeeRepository;
-import lombok.extern.slf4j.Slf4j;
+import com.rainard.grindhouse.persistence.entity.AuditLogEntity;
+import com.rainard.grindhouse.persistence.entity.CoffeeEntity;
+import com.rainard.grindhouse.persistence.entity.EmployeeEntity;
+import com.rainard.grindhouse.persistence.repository.CoffeeRepository;
+import com.rainard.grindhouse.persistence.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,28 +25,28 @@ public class AuthController {
     @Autowired
     private CoffeeRepository coffeeRepository;
     @Autowired
-    private AuditLogRepository auditLogRepository;
+    private com.rainard.grindhouse.persistence.repository.AuditLogRepository auditLogRepository;
 
     @GetMapping("/auth/login")
     public ResponseEntity<Object> login(@RequestParam String empNumber, @RequestParam String empPassword) {
-        Employee employee = employeeRepository.findEmployeeByEmpNumberAndEmpPassword(empNumber,empPassword);
-        if (Objects.nonNull(employee)) {
-            List<Coffee> coffees = new ArrayList<>();
-            coffeeRepository.findAll().iterator().forEachRemaining(coffees::add);
+        EmployeeEntity employeeEntity = employeeRepository.findEmployeeByEmpNumberAndEmpPassword(empNumber,empPassword);
+        if (Objects.nonNull(employeeEntity)) {
+            List<CoffeeEntity> coffeeEntities = new ArrayList<>();
+            coffeeRepository.findAll().iterator().forEachRemaining(coffeeEntities::add);
             LoginResponse response = LoginResponse.builder()
-                    .coffees(coffees)
-                    .employeeId(employee.getId())
-                    .employeeName(employee.getEmpName())
+                    .coffees(coffeeEntities)
+                    .employeeId(employeeEntity.getId())
+                    .employeeName(employeeEntity.getEmpName())
                     .build();
-            AuditLog auditLog = AuditLog.builder()
-                    .empId(employee.getId())
+            AuditLogEntity auditLogEntity = AuditLogEntity.builder()
+                    .empId(employeeEntity.getId())
                     .actionType("Login")
                     .notes("Successful")
                     .timestamp(new Timestamp(System.currentTimeMillis()))
                     .build();
-            employee.setIsLoggedIn(true);
-            employeeRepository.save(employee);
-            auditLogRepository.save(auditLog);
+            employeeEntity.setIsLoggedIn(true);
+            employeeRepository.save(employeeEntity);
+            this.auditLogRepository.save(auditLogEntity);
             return ResponseEntity.ok(response);
         } else {
             FailResponse response = FailResponse.builder()
@@ -62,17 +60,17 @@ public class AuthController {
 
     @GetMapping("/auth/logout")
     public ResponseEntity<Object> logout(@RequestParam int empId) {
-        Employee employee = employeeRepository.findEmployeeById(empId);
-        if (Objects.nonNull(employee)) {
-            employee.setIsLoggedIn(false);
-            employeeRepository.save(employee);
-            AuditLog auditLog = AuditLog.builder()
-                    .empId(employee.getId())
+        EmployeeEntity employeeEntity = employeeRepository.findEmployeeById(empId);
+        if (Objects.nonNull(employeeEntity)) {
+            employeeEntity.setIsLoggedIn(false);
+            employeeRepository.save(employeeEntity);
+            AuditLogEntity auditLogEntity = AuditLogEntity.builder()
+                    .empId(employeeEntity.getId())
                     .actionType("Log out")
                     .notes("Successful")
                     .timestamp(new Timestamp(System.currentTimeMillis()))
                     .build();
-            auditLogRepository.save(auditLog);
+            this.auditLogRepository.save(auditLogEntity);
             return ResponseEntity.ok("Logged out");
         }
          else {

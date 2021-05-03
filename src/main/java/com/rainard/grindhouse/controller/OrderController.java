@@ -2,10 +2,9 @@ package com.rainard.grindhouse.controller;
 
 import com.rainard.grindhouse.model.OrderWithItems;
 import com.rainard.grindhouse.model.response.FailResponse;
-import com.rainard.grindhouse.model.table.Orders;
-import com.rainard.grindhouse.repository.ItemRepository;
-import com.rainard.grindhouse.repository.OrderRepository;
-import lombok.extern.slf4j.Slf4j;
+import com.rainard.grindhouse.persistence.entity.OrdersEntity;
+import com.rainard.grindhouse.persistence.repository.ItemRepository;
+import com.rainard.grindhouse.persistence.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +22,11 @@ public class OrderController {
 
     @GetMapping("order/view")
     public ResponseEntity<Object> viewOrder(@RequestParam int orderId) {
-        Orders orders = orderRepository.findOrdersById(orderId);
-        if (Objects.nonNull(orders)) {
+        OrdersEntity ordersEntity = orderRepository.findOrdersById(orderId);
+        if (Objects.nonNull(ordersEntity)) {
             OrderWithItems orderWithItems = OrderWithItems.builder()
-                    .order(orders)
-                    .orderItems(itemRepository.findAllByFkOrderId(orders.getId()))
+                    .order(ordersEntity)
+                    .orderItems(itemRepository.findAllByFkOrderId(ordersEntity.getId()))
                     .build();
             return ResponseEntity.ok(orderWithItems);
         } else {
@@ -35,22 +34,22 @@ public class OrderController {
         }
     }
 
-    @GetMapping("orders/view")
+    @GetMapping("ordersEntity/view")
     public ResponseEntity<Object> viewInProgressOrders(@RequestParam int empId, @RequestParam String state) {
-        List<Orders> orders = orderRepository.findAllByFkEmpIdAndStateEquals(empId, state);
-        if (orders.isEmpty()) {
-            return failResponse("Orders View Failed","Could not retrieve orders of state: " + state);
+        List<OrdersEntity> ordersEntity = orderRepository.findAllByFkEmpIdAndStateEquals(empId, state);
+        if (ordersEntity.isEmpty()) {
+            return failResponse("Orders View Failed","Could not retrieve ordersEntity of state: " + state);
         } else {
-            return ResponseEntity.ok(orders);
+            return ResponseEntity.ok(ordersEntity);
         }
     }
 
     @PostMapping("order/create")
     public ResponseEntity<Object> createOrder(@RequestBody OrderWithItems orderWithItems) {
-        if (Objects.nonNull(orderWithItems.getOrder()) && !orderWithItems.getOrderItems().isEmpty()) {
-            Orders orders = orderRepository.save(orderWithItems.getOrder());
-            orderWithItems.getOrderItems().forEach(item -> item.setFkOrderId(orders.getId()));
-            itemRepository.saveAll(orderWithItems.getOrderItems());
+        if (Objects.nonNull(orderWithItems.getOrder()) && !orderWithItems.getOrderItemEntities().isEmpty()) {
+            OrdersEntity ordersEntity = orderRepository.save(orderWithItems.getOrder());
+            orderWithItems.getOrderItemEntities().forEach(item -> item.setFkOrderId(ordersEntity.getId()));
+            itemRepository.saveAll(orderWithItems.getOrderItemEntities());
             return ResponseEntity.ok("Successfully created");
         } else {
             return failResponse("Create Failed","Could not create order, check order and orderItems.");
@@ -59,10 +58,10 @@ public class OrderController {
 
     @PatchMapping("order/update/state")
     public ResponseEntity<Object> updateOrderState(@RequestParam int orderId, @RequestParam String state) {
-        Orders orders = orderRepository.findOrdersById(orderId);
-        if (Objects.nonNull(orders)) {
-            orders.setState(state);
-            orderRepository.save(orders);
+        OrdersEntity ordersEntity = orderRepository.findOrdersById(orderId);
+        if (Objects.nonNull(ordersEntity)) {
+            ordersEntity.setState(state);
+            orderRepository.save(ordersEntity);
             return ResponseEntity.ok("Successfully changed state.");
         } else {
             return failResponse("Update Failed","Could not update order state.");
