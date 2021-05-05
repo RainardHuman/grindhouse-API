@@ -1,26 +1,40 @@
 package com.rainard.grindhouse.domain.model;
 
 import com.rainard.grindhouse.domain.model.common.AbstractBaseDomain;
-import com.rainard.grindhouse.persistence.entity.ItemEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+
+@AllArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@ToString(callSuper = true)
+@SuperBuilder
 public class Coffee extends AbstractBaseDomain {
 
     private String coffeeName;
-    private Double coffeePrice;
+    private String coffeePrice;
     private String coffeeDescription;
-    private Boolean hasMilk;
-    private Boolean hasCream;
-    private Boolean hasSugar;
 
-    private List<ItemEntity> itemEntities;
+    @Builder.Default
+    private Boolean hasMilk = false;
 
-    public Double calculatePrice() {
-        return this.coffeePrice;
-    }
+    @Builder.Default
+    private Boolean hasCream = false;
+
+    @Builder.Default
+    private Boolean hasSugar = false;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Item> items;
+
 }

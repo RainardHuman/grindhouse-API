@@ -1,21 +1,31 @@
 package com.rainard.grindhouse.domain.model;
 
 import com.rainard.grindhouse.persistence.entity.common.AbstractBaseEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
+@AllArgsConstructor
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@ToString(callSuper = true)
+@SuperBuilder
 public class Customer extends AbstractBaseEntity {
 
-    private String custName;
-    private String custContact;
-    private int orderCount;
-    private boolean isValid;
+    private String customerName;
+    private String customerContact;
+    private Integer orderCount;
+    private Boolean isValid;
 
-    private List<Orders> ordersEntity;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Orders> orders;
 
 }

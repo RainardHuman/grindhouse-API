@@ -1,9 +1,9 @@
 package com.rainard.grindhouse.persistence.repository;
+
 import com.rainard.grindhouse.persistence.entity.ItemEntity;
-import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ItemRepository extends CrudRepository<ItemEntity, Integer> {
-    List<ItemEntity> findAllByFkOrderId(int id);
+public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
+//    List<ItemEntity> findAllByFkOrderId(int id);
 }

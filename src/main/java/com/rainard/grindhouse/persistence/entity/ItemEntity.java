@@ -1,21 +1,32 @@
 package com.rainard.grindhouse.persistence.entity;
 
 import com.rainard.grindhouse.persistence.entity.common.AbstractBaseEntity;
-import lombok.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
-
+@AllArgsConstructor
 @Data
+@Entity
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @ToString(callSuper = true)
 @SuperBuilder
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
 @Table(name = "item")
 public class ItemEntity extends AbstractBaseEntity {
 
-    // ============ PROPERTIES ================
     @Column(name = "quantity", nullable = false, updatable = false)
     private Integer quantity;
 
@@ -30,18 +41,17 @@ public class ItemEntity extends AbstractBaseEntity {
 
     @Column(name = "order_version", nullable = false, updatable = false)
     private Integer orderVersion;
-    // ========================================
 
-    // ============ RELATIONSHIPS =============
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "coffee_id")
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private CoffeeEntity coffeeEntity;
+    private CoffeeEntity coffee;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private OrdersEntity order;
-    // ========================================
 
 }

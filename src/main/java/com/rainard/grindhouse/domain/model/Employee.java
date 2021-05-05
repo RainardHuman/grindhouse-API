@@ -1,20 +1,35 @@
 package com.rainard.grindhouse.domain.model;
 
 import com.rainard.grindhouse.persistence.entity.common.AbstractBaseEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+
+@AllArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@ToString(callSuper = true)
+@SuperBuilder
 public class Employee extends AbstractBaseEntity {
 
     private String employeeNumber;
     private String employeePassword;
     private String employeeName;
-    private boolean isLoggedIn;
+    private Boolean isLoggedIn;
 
-    private List<AuditLog> auditLogRepositories;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Orders> orders;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<AuditLog> auditLogs;
 
 }

@@ -1,17 +1,15 @@
 package com.rainard.grindhouse.model;
 
-import com.rainard.grindhouse.persistence.entity.ItemEntity;
-import com.rainard.grindhouse.persistence.entity.OrdersEntity;
+import com.rainard.grindhouse.domain.model.Orders;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
-@Data
 @AllArgsConstructor
-@NoArgsConstructor
+@Data
+@SuperBuilder
 public class OrderWithItems {
-//    private OrdersEntity order;
-//    private List<ItemEntity> orderItemEntities;
+    private Orders order;
+    // Items are within order object.
 }

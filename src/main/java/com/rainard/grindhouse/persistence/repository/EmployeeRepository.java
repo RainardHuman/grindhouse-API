@@ -1,10 +1,16 @@
 package com.rainard.grindhouse.persistence.repository;
+
 import com.rainard.grindhouse.persistence.entity.EmployeeEntity;
-import org.springframework.data.repository.CrudRepository;
 
-public interface EmployeeRepository extends CrudRepository<EmployeeEntity, Integer> {
+import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
 
-    EmployeeEntity findEmployeeByEmpNumberAndEmpPassword(String empNumber, String empPassword);
-    EmployeeEntity findEmployeeById(int id);
+public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> {
+
+    Optional<EmployeeEntity> findEmployeeEntityByEmployeeNumberAndAndEmployeePassword(String employeeNumber, String employeePassword);
+
+//    EmployeeEntity findEmployeeByEmpNumberAndEmpPassword();
+//
+//    EmployeeEntity findEmployeeById(int id);
 }

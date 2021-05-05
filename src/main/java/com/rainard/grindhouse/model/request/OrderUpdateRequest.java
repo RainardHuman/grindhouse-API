@@ -1,10 +1,15 @@
 package com.rainard.grindhouse.model.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
+@AllArgsConstructor
 @Data
-
+@NoArgsConstructor
+@SuperBuilder
 public class OrderUpdateRequest {
-    private int order_id;
+    private Integer orderId;
     private String state;
 }

@@ -1,14 +1,20 @@
 package com.rainard.grindhouse.model.response;
 
-import com.rainard.grindhouse.persistence.entity.CoffeeEntity;
-import lombok.Data;
+import com.rainard.grindhouse.domain.model.Coffee;
 
 import java.util.List;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
+@AllArgsConstructor
+@Data
+@NoArgsConstructor
+@SuperBuilder
 public class LoginResponse {
-    private int employeeId;
+    private Long employeeId;
     private String employeeName;
-    private List<CoffeeEntity> coffeeEntities;
+    private List<Coffee> coffees;
 }

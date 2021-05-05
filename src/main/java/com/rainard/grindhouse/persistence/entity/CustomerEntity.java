@@ -1,39 +1,48 @@
 package com.rainard.grindhouse.persistence.entity;
 
 import com.rainard.grindhouse.persistence.entity.common.AbstractBaseEntity;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import java.util.List;
 
-@Data
-@SuperBuilder
-@ToString(callSuper = true)
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+
 @AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@ToString(callSuper = true)
+@SuperBuilder
 @Table(name = "customer")
 public class CustomerEntity extends AbstractBaseEntity {
 
-    // ============ PROPERTIES ================
-    @Column(name = "cust_name", nullable = false, updatable = false)
-    private String custName;
+    @Column(name = "customer_name", nullable = false, updatable = false)
+    private String customerName;
 
-    @Column(name = "cust_contact", nullable = false, updatable = false)
-    private String custContact;
+    @Column(name = "customer_contact", nullable = false, updatable = false)
+    private String customerContact;
 
     @Column(name = "order_count", nullable = false, updatable = false)
-    private int orderCount;
+    private Integer orderCount;
 
     @Column(name = "is_valid", nullable = false, updatable = false)
-    private boolean isValid;
-    // ========================================
+    private Boolean isValid;
 
-    // ============ RELATIONSHIPS =============
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customer")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<OrdersEntity> ordersEntity;
-    // ========================================
+    private List<OrdersEntity> orders;
 
 }

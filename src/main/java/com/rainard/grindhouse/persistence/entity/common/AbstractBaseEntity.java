@@ -1,14 +1,27 @@
 package com.rainard.grindhouse.persistence.entity.common;
 
-import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+@AllArgsConstructor
 @Data
+@NoArgsConstructor
+@SuperBuilder
 @MappedSuperclass
 public abstract class AbstractBaseEntity implements Serializable {
 
@@ -19,10 +32,12 @@ public abstract class AbstractBaseEntity implements Serializable {
 
     @CreatedDate
     @Column(name = "created", updatable = false, nullable = false)
+    @EqualsAndHashCode.Exclude
     private Timestamp created;
 
     @LastModifiedDate
     @Column(name = "updated", nullable = false)
+    @EqualsAndHashCode.Exclude
     private Timestamp updated;
 
 }
