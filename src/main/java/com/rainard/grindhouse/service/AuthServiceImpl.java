@@ -1,36 +1,36 @@
 package com.rainard.grindhouse.service;
 
+import com.rainard.grindhouse.cache.repository.EmployeeRedisRepository;
 import com.rainard.grindhouse.model.response.FailResponse;
 import com.rainard.grindhouse.model.response.LoginResponse;
 import com.rainard.grindhouse.persistence.entity.AuditLogEntity;
 import com.rainard.grindhouse.persistence.repository.AuditLogRepository;
 import com.rainard.grindhouse.persistence.repository.CoffeeRepository;
 import com.rainard.grindhouse.persistence.repository.EmployeeRepository;
-
+import com.rainard.grindhouse.util.AuthUtil;
 import com.rainard.grindhouse.util.MapUtil;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
-
-import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Base64;
+import java.util.Objects;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     private final EmployeeRepository employeeRepository;
     private final CoffeeRepository coffeeRepository;
     private final AuditLogRepository auditLogRepository;
+    private final EmployeeRedisRepository employeeRedisRepository;
     private final MapUtil mapper = new MapUtil();
-    private static final SecureRandom secureRandom = new SecureRandom();
-    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
-
-
+    private final AuthUtil authUtil = new AuthUtil();
 
     @Override
     public ResponseEntity<Object> login(final String employeeNumber, final String employeePassword) {
@@ -41,6 +41,9 @@ public class AuthServiceImpl implements AuthService {
             var employee = optionalEmployeeEntity.get();
 
             employee.setIsLoggedIn(true);
+            employee.setUpdated(Timestamp.from(Instant.now()));
+            String sessionToken = authUtil.generateNewToken();
+            employeeRedisRepository.save(sessionToken, employee.getId());
 
             var coffeeEntityList = coffeeRepository.findAll();
 
@@ -57,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
 
             return ResponseEntity
                 .ok(LoginResponse.builder()
-                    .sessionToken(generateNewToken())
+                    .sessionToken(sessionToken)
                     .coffees(mapper.mapCoffees(coffeeEntityList))
                     .employeeId(employee.getId())
                     .employeeName(employee.getEmployeeName())
@@ -73,24 +76,27 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<Object> logout(final Long employeeId) {
-        var optionalEmployeeEntity = employeeRepository.findById(employeeId);
-        if (optionalEmployeeEntity.isPresent()) {
-            var employee = optionalEmployeeEntity.get();
+    public ResponseEntity<Object> logout(String sessionToken, Long id) {
+        if (Objects.nonNull(id)) {
+            var optionalEmployeeEntity = employeeRepository.findById(id);
+            if (optionalEmployeeEntity.isPresent()) {
+                var employee = optionalEmployeeEntity.get();
+                employee.setIsLoggedIn(false);
+                employee.setUpdated(Timestamp.from(Instant.now()));
 
-            employee.setIsLoggedIn(false);
+                var auditLog = AuditLogEntity.builder()
+                    .employee(employee)
+                    .created(Timestamp.from(Instant.now()))
+                    .actionType("Log out")
+                    .notes("Successful")
+                    .build();
 
-            var auditLog = AuditLogEntity.builder()
-                .employee(employee)
-                .created(Timestamp.from(Instant.now()))
-                .actionType("Log out")
-                .notes("Successful")
-                .build();
+                employeeRedisRepository.delete(sessionToken);
+                auditLogRepository.save(auditLog);
+                employeeRepository.save(employee);
+            }
+                return ResponseEntity.ok("Logged out");
 
-            auditLogRepository.save(auditLog);
-            employeeRepository.save(employee);
-
-            return ResponseEntity.ok("Logged out");
         } else {
             return ResponseEntity
                 .status(400)
@@ -100,13 +106,4 @@ public class AuthServiceImpl implements AuthService {
                     .build());
         }
     }
-
-    public static String generateNewToken() {
-        byte[] randomBytes = new byte[24];
-        secureRandom.nextBytes(randomBytes);
-        return base64Encoder.encodeToString(randomBytes);
-    }
-
-
-
 }

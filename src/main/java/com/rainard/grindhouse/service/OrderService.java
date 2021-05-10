@@ -16,7 +16,7 @@ public interface OrderService {
 
     ResponseEntity<Object> viewOrdersByState(ViewOrderByStateRequest request);
 
-    ResponseEntity<Object> createOrder(CreateOrderRequest request, EmployeeEntity employeeEntity);
+    ResponseEntity<Object> createOrder(CreateOrderRequest request, Long id);
 
     ResponseEntity<Object> updateOrderState(UpdateOrderStateRequest request);
 

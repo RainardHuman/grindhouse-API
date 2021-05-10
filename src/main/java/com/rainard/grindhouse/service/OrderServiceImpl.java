@@ -1,5 +1,6 @@
 package com.rainard.grindhouse.service;
 
+import com.rainard.grindhouse.cache.repository.EmployeeRedisRepository;
 import com.rainard.grindhouse.model.CapturedItem;
 import com.rainard.grindhouse.model.request.CreateOrderRequest;
 import com.rainard.grindhouse.model.request.UpdateOrderStateRequest;
@@ -12,6 +13,7 @@ import com.rainard.grindhouse.persistence.entity.ItemEntity;
 import com.rainard.grindhouse.persistence.entity.OrdersEntity;
 import com.rainard.grindhouse.persistence.repository.CoffeeRepository;
 import com.rainard.grindhouse.persistence.repository.CustomerRepository;
+import com.rainard.grindhouse.persistence.repository.EmployeeRepository;
 import com.rainard.grindhouse.persistence.repository.OrderRepository;
 import com.rainard.grindhouse.util.MapUtil;
 
@@ -36,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final CoffeeRepository coffeeRepository;
     private final CustomerRepository customerRepository;
+    private final EmployeeRepository employeeRepository;
+    private final EmployeeRedisRepository employeeRedisRepository;
     private final MapUtil mapper = new MapUtil();
 
     @Override
@@ -66,7 +70,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<Object> createOrder(CreateOrderRequest request, EmployeeEntity employeeEntity) {
+    public ResponseEntity<Object> createOrder(CreateOrderRequest request, Long id) {
+
+        EmployeeEntity employeeEntity = employeeRepository.findById(id).get();
 
         if (!request.getItems().isEmpty() &&
             Objects.nonNull(request.getCustomer())) {
@@ -97,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
             ordersEntity.setItems(items);
             orderRepository.save(ordersEntity);
 
-            return ResponseEntity.ok(ordersEntity.toString());
+            return ResponseEntity.ok("Created");
 
         } else
             return badResponse();
@@ -112,6 +118,7 @@ public class OrderServiceImpl implements OrderService {
                 return null;
             } else
                 items.add(ItemEntity.builder()
+                    .created(Timestamp.from(Instant.now()))
                     .quantity(item.getQuantity())
                     .orderVersion(1)
                     .cream(item.isCream())

@@ -1,22 +1,23 @@
 package com.rainard.grindhouse.util;
 
-import com.rainard.grindhouse.persistence.entity.EmployeeEntity;
-
-import com.rainard.grindhouse.persistence.repository.EmployeeRepository;
-
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
+import java.util.Base64;
 
 public class AuthUtil {
 
-    public EmployeeEntity validateSession(String sessionToken) {
-        return null;
-    }
+    private static final SecureRandom secureRandom = new SecureRandom();
+    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
     public ResponseEntity<Object> unauthorisedUser() {
         return ResponseEntity.status(401).body("Please login.");
+    }
+
+    public String generateNewToken() {
+        byte[] randomBytes = new byte[24];
+        secureRandom.nextBytes(randomBytes);
+        return base64Encoder.encodeToString(randomBytes);
     }
 
 }
