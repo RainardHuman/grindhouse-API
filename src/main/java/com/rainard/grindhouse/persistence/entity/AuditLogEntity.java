@@ -27,14 +27,14 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "audit_log")
 public class AuditLogEntity extends AbstractBaseEntity {
 
-    @Column(name = "action_type", nullable = false, updatable = false)
+    @Column(name = "action_type")
     private String actionType;
 
-    @Column(name = "notes", nullable = false, updatable = false)
+    @Column(name = "notes")
     private String notes;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id", nullable = false, updatable = false)
+    @JoinColumn(name = "employee_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private EmployeeEntity employee;

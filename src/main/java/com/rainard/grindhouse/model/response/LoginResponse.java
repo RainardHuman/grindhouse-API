@@ -1,8 +1,9 @@
 package com.rainard.grindhouse.model.response;
 
-import com.rainard.grindhouse.domain.model.Coffee;
 
 import java.util.List;
+
+import com.rainard.grindhouse.model.Coffee;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class LoginResponse {
     private Long employeeId;
+    private String sessionToken;
     private String employeeName;
     private List<Coffee> coffees;
 }

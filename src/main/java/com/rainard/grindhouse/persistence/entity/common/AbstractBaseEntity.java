@@ -27,16 +27,16 @@ public abstract class AbstractBaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id")
     private Long id;
 
     @CreatedDate
-    @Column(name = "created", updatable = false, nullable = false)
+    @Column(name = "created")
     @EqualsAndHashCode.Exclude
     private Timestamp created;
 
     @LastModifiedDate
-    @Column(name = "updated", nullable = false)
+    @Column(name = "updated")
     @EqualsAndHashCode.Exclude
     private Timestamp updated;
 

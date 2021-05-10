@@ -1,65 +1,74 @@
 package com.rainard.grindhouse.service;
 
-import com.rainard.grindhouse.domain.mapper.ItemMapper;
-import com.rainard.grindhouse.domain.mapper.OrdersMapper;
 import com.rainard.grindhouse.model.OrderWithItems;
+import com.rainard.grindhouse.model.request.CreateOrderRequest;
+import com.rainard.grindhouse.model.request.UpdateOrderStateRequest;
+import com.rainard.grindhouse.model.request.ViewOrderByStateRequest;
+import com.rainard.grindhouse.model.request.ViewOrderRequest;
 import com.rainard.grindhouse.model.response.FailResponse;
-import com.rainard.grindhouse.persistence.entity.mapper.OrdersEntityMapper;
-import com.rainard.grindhouse.persistence.repository.ItemRepository;
 import com.rainard.grindhouse.persistence.repository.OrderRepository;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    // This is injected with constructor injection by spring dependency injection.
     private final OrderRepository orderRepository;
-    private final ItemRepository itemRepository;
-    private final OrdersMapper ordersMapper;
-    private final ItemMapper itemMapper;
-    private final OrdersEntityMapper ordersEntityMapper;
 
     @Override
-    public ResponseEntity<Object> viewOrder(@RequestParam Long orderId) {
-        var optionalOrdersEntity = orderRepository.findById(orderId);
+    public ResponseEntity<Object> viewOrder(ViewOrderRequest request) {
 
-        if (optionalOrdersEntity.isPresent()) {
-            var order = ordersMapper.map(optionalOrdersEntity.get());
+        //session token check = true
+        //would retrieve employee id
+        if (isValidSession()) {
+            var optionalOrdersEntity = orderRepository.findById(request.getOrderId());
 
-            return ResponseEntity
-                .ok(OrderWithItems.builder()
-                    .order(order)
-                    .build());
+            if (optionalOrdersEntity.isPresent()) {
+                var order = optionalOrdersEntity.get();
+
+                return ResponseEntity
+                    .ok(OrderWithItems.builder()
+                        .order(order)
+                        .build());
+            } else {
+                return failResponse("No Order Found", "Could not find any orders by given id.");
+            }
         } else {
-            return failResponse("Login Failed", "Incorrect employee number or password.");
+            return failResponse("Unauthorized", "Please log in and retry");
         }
     }
 
+
+
     @Override
-    public ResponseEntity<Object> viewInProgressOrders(final Long employeeId, final String state) {
-        var ordersEntities = orderRepository.findAllByEmployee_IdAndState(employeeId, state);
-        if (ordersEntities.isEmpty()) {
-            return failResponse("Orders View Failed", "Could not retrieve ordersEntity of state: " + state);
-        } else {
-            // this should be mapped to a dto
-            return ResponseEntity.ok(ordersEntities);
-        }
+    public ResponseEntity<Object> viewOrdersByState(ViewOrderByStateRequest request) {
+        List<String> acceptedStates = Arrays.asList("inprogress", "history");
+            if (acceptedStates.contains(request.getState())) {
+                var ordersEntities = orderRepository.findAllByEmployee_IdAndState(Long.valueOf("1"),request.getState());
+                return ordersEntities.isEmpty() ?
+                    failResponse("Orders View Failed", "Could not retrieve ordersEntity of state: " + request.getState()) :
+                    ResponseEntity.ok(ordersEntities);
+            } else {
+                return failResponse("Unknown state", "Could not retrieve any orders of state: " + request.getState());
+            }
     }
 
+
     @Override
-    public ResponseEntity<Object> createOrder(OrderWithItems orderWithItems) {
-        if (Objects.nonNull(orderWithItems.getOrder()) && !orderWithItems.getOrder().getItems().isEmpty()) {
-
-            orderRepository.save(ordersEntityMapper.map(orderWithItems.getOrder()));
-
+    public ResponseEntity<Object> createOrder(CreateOrderRequest request) {
+        if (Objects.nonNull(request.getOrderId()) && !request.) {
+            orderRepository.save(orderWithItems.getOrder());
             return ResponseEntity.ok("Successfully created");
         } else {
             return failResponse("Create Failed", "Could not create order, check order and orderItems.");
@@ -67,18 +76,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<Object> updateOrderState(final Long orderId, final String state) {
-        var optionalOrdersEntity = orderRepository.findById(orderId);
-        if (optionalOrdersEntity.isPresent()) {
-            var order = ordersMapper.map(optionalOrdersEntity.get());
+    public ResponseEntity<Object> updateOrderState(@RequestBody UpdateOrderStateRequest request) {
+        //session token check = true
+        //would retrieve employee id
+        if (true) {
+            var optionalOrdersEntity = orderRepository.findById(request.getOrderId());
+            if (optionalOrdersEntity.isPresent()) {
+                var order = optionalOrdersEntity.get();
 
-            order.setState(state);
-            orderRepository.save(ordersEntityMapper.map(order));
+                order.setState(request.getState());
+                orderRepository.save(order);
 
-            return ResponseEntity.ok("Successfully changed state.");
+                return ResponseEntity.ok("Successfully changed state.");
+            } else {
+                return failResponse("Update Failed", "Could not update order state.");
+            }
         } else {
-            return failResponse("Update Failed", "Could not update order state.");
+            return failResponse("Unauthorized", "Please log in and retry");
         }
+
     }
 
     private ResponseEntity<Object> failResponse(String error, String message) {
@@ -87,4 +103,6 @@ public class OrderServiceImpl implements OrderService {
             .message(message)
             .build());
     }
+
+
 }

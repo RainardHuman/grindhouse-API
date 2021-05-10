@@ -30,20 +30,20 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "ordersEntity")
 public class OrdersEntity extends AbstractBaseEntity {
 
-    @Column(name = "state", nullable = false, updatable = false)
+    @Column(name = "state")
     private String state;
 
-    @Column(name = "version", nullable = false, updatable = false)
+    @Column(name = "version")
     private Integer version;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customer_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private CustomerEntity customer;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id", nullable = false)
+    @JoinColumn(name = "employee_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private EmployeeEntity employee;

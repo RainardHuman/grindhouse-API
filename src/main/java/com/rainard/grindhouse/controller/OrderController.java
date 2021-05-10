@@ -1,14 +1,15 @@
 package com.rainard.grindhouse.controller;
 
-import com.rainard.grindhouse.model.OrderWithItems;
+import com.rainard.grindhouse.model.request.CreateOrderRequest;
+import com.rainard.grindhouse.model.request.UpdateOrderStateRequest;
+import com.rainard.grindhouse.model.request.ViewOrderByStateRequest;
+import com.rainard.grindhouse.model.request.ViewOrderRequest;
 import com.rainard.grindhouse.service.OrderService;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -19,23 +20,24 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping("order/view")
-    public ResponseEntity<Object> viewOrder(@RequestParam Long orderId) {
-        return orderService.viewOrder(orderId);
+    @PostMapping("order/view")
+    public ResponseEntity<Object> viewOrder(@RequestBody ViewOrderRequest request) {
+        return orderService.viewOrder(request);
     }
 
-    @GetMapping("ordersEntity/view")
-    public ResponseEntity<Object> viewInProgressOrders(@RequestParam Long employeeId, @RequestParam String state) {
-        return orderService.viewInProgressOrders(employeeId, state);
+    @PostMapping("ordersEntity/view")
+    public ResponseEntity<Object> viewOrdersByState(@RequestBody ViewOrderByStateRequest request) {
+        return orderService.viewOrdersByState(request);
     }
 
     @PostMapping("order/create")
-    public ResponseEntity<Object> createOrder(@RequestBody OrderWithItems orderWithItems) {
-        return orderService.createOrder(orderWithItems);
+    public ResponseEntity<Object> createOrder(@RequestBody CreateOrderRequest request) {
+        return orderService.createOrder(request);
     }
 
     @PatchMapping("order/update/state")
-    public ResponseEntity<Object> updateOrderState(@RequestParam Long orderId, @RequestParam String state) {
-        return orderService.updateOrderState(orderId, state);
+    public ResponseEntity<Object> updateOrderState(@RequestBody UpdateOrderStateRequest request) {
+        return orderService.updateOrderState(request);
+
     }
 }

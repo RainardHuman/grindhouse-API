@@ -27,19 +27,19 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "item")
 public class ItemEntity extends AbstractBaseEntity {
 
-    @Column(name = "quantity", nullable = false, updatable = false)
+    @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "milk", nullable = false, updatable = false)
+    @Column(name = "milk")
     private Boolean milk;
 
-    @Column(name = "sugar", nullable = false, updatable = false)
+    @Column(name = "sugar")
     private Boolean sugar;
 
-    @Column(name = "cream", nullable = false, updatable = false)
+    @Column(name = "cream")
     private Boolean cream;
 
-    @Column(name = "order_version", nullable = false, updatable = false)
+    @Column(name = "order_version")
     private Integer orderVersion;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

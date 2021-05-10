@@ -29,25 +29,25 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "coffee")
 public class CoffeeEntity extends AbstractBaseEntity {
 
-    @Column(name = "coffee_name", updatable = false, nullable = false)
+    @Column(name = "coffee_name")
     private String coffeeName;
 
-    @Column(name = "coffee_price", updatable = false, nullable = false)
+    @Column(name = "coffee_price")
     private String coffeePrice;
 
-    @Column(name = "coffee_description", nullable = false, updatable = false)
+    @Column(name = "coffee_description")
     private String coffeeDescription;
 
     @Builder.Default
-    @Column(name = "has_milk", nullable = false, updatable = false)
+    @Column(name = "has_milk")
     private Boolean hasMilk = false;
 
     @Builder.Default
-    @Column(name = "has_cream", nullable = false, updatable = false)
+    @Column(name = "has_cream")
     private Boolean hasCream = false;
 
     @Builder.Default
-    @Column(name = "has_sugar", nullable = false, updatable = false)
+    @Column(name = "has_sugar")
     private Boolean hasSugar = false;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "coffee", cascade = CascadeType.ALL)

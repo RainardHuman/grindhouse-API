@@ -28,16 +28,16 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "customer")
 public class CustomerEntity extends AbstractBaseEntity {
 
-    @Column(name = "customer_name", nullable = false, updatable = false)
+    @Column(name = "customer_name")
     private String customerName;
 
-    @Column(name = "customer_contact", nullable = false, updatable = false)
+    @Column(name = "customer_contact")
     private String customerContact;
 
-    @Column(name = "order_count", nullable = false, updatable = false)
+    @Column(name = "order_count")
     private Integer orderCount;
 
-    @Column(name = "is_valid", nullable = false, updatable = false)
+    @Column(name = "is_valid")
     private Boolean isValid;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)

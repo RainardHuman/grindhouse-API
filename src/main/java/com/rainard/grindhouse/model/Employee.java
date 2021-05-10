@@ -1,4 +1,4 @@
-package com.rainard.grindhouse.model.request;
+package com.rainard.grindhouse.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,8 @@ import lombok.experimental.SuperBuilder;
 @Data
 @NoArgsConstructor
 @SuperBuilder
-public class OrderUpdateRequest {
-    private Integer orderId;
-    private String state;
+public class Employee {
+    private Long id;
+    private String employeeName;
+    private Boolean isLoggedIn;
 }

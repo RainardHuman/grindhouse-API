@@ -28,16 +28,16 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "employee")
 public class EmployeeEntity extends AbstractBaseEntity {
 
-    @Column(name = "employee_number", nullable = false, updatable = false)
+    @Column(name = "employee_number")
     private String employeeNumber;
 
-    @Column(name = "employee_password", nullable = false, updatable = false)
+    @Column(name = "employee_password")
     private String employeePassword;
 
-    @Column(name = "employee_name", nullable = false, updatable = false)
+    @Column(name = "employee_name")
     private String employeeName;
 
-    @Column(name = "is_logged_in", nullable = false, updatable = false)
+    @Column(name = "is_logged_in")
     private Boolean isLoggedIn;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)

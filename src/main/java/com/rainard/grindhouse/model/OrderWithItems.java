@@ -1,6 +1,7 @@
 package com.rainard.grindhouse.model;
 
-import com.rainard.grindhouse.domain.model.Orders;
+
+import com.rainard.grindhouse.persistence.entity.OrdersEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class OrderWithItems {
-    private Orders order;
+    private OrdersEntity order;
     // Items are within order object.
 }
