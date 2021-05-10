@@ -9,8 +9,10 @@ import lombok.experimental.SuperBuilder;
 @Data
 @NoArgsConstructor
 @SuperBuilder
-public class Employee {
-    private Long id;
-    private String employeeName;
-    private Boolean isLoggedIn;
+public class CapturedItem {
+    private int quantity;
+    private Long coffeeId;
+    private boolean milk;
+    private boolean sugar;
+    private boolean cream;
 }

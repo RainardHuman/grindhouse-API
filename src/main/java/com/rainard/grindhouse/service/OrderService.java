@@ -1,12 +1,12 @@
 package com.rainard.grindhouse.service;
 
-import com.rainard.grindhouse.model.OrderWithItems;
-
 import com.rainard.grindhouse.model.request.CreateOrderRequest;
 import com.rainard.grindhouse.model.request.UpdateOrderStateRequest;
 import com.rainard.grindhouse.model.request.ViewOrderByStateRequest;
 
 import com.rainard.grindhouse.model.request.ViewOrderRequest;
+
+import com.rainard.grindhouse.persistence.entity.EmployeeEntity;
 
 import org.springframework.http.ResponseEntity;
 
@@ -16,7 +16,7 @@ public interface OrderService {
 
     ResponseEntity<Object> viewOrdersByState(ViewOrderByStateRequest request);
 
-    ResponseEntity<Object> createOrder(CreateOrderRequest request);
+    ResponseEntity<Object> createOrder(CreateOrderRequest request, EmployeeEntity employeeEntity);
 
     ResponseEntity<Object> updateOrderState(UpdateOrderStateRequest request);
 

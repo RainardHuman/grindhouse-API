@@ -5,4 +5,5 @@ import com.rainard.grindhouse.persistence.entity.CustomerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
+    CustomerEntity findCustomerEntityByCustomerNameAndAndCustomerContact(String name, String contact);
 }

@@ -1,6 +1,4 @@
-package com.rainard.grindhouse.model.response;
-
-import com.rainard.grindhouse.model.domain.Order;
+package com.rainard.grindhouse.model.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +9,8 @@ import lombok.experimental.SuperBuilder;
 @Data
 @NoArgsConstructor
 @SuperBuilder
-public class ViewOrderResponse {
-    private Order order;
+public class Employee {
+    private Long id;
+    private String name;
+    private Boolean isLoggedIn;
 }

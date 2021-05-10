@@ -1,4 +1,4 @@
-package com.rainard.grindhouse.model;
+package com.rainard.grindhouse.model.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,8 +10,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class Customer {
-    private String customerName;
-    private String customerContact;
-    private Integer orderCount;
-    private Boolean isValid;
+    private String name;
+    private String contact;
 }

@@ -1,10 +1,8 @@
 package com.rainard.grindhouse.service;
 
-import com.rainard.grindhouse.model.Coffee;
 import com.rainard.grindhouse.model.response.FailResponse;
 import com.rainard.grindhouse.model.response.LoginResponse;
 import com.rainard.grindhouse.persistence.entity.AuditLogEntity;
-import com.rainard.grindhouse.persistence.entity.CoffeeEntity;
 import com.rainard.grindhouse.persistence.repository.AuditLogRepository;
 import com.rainard.grindhouse.persistence.repository.CoffeeRepository;
 import com.rainard.grindhouse.persistence.repository.EmployeeRepository;
@@ -19,10 +17,7 @@ import lombok.RequiredArgsConstructor;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -51,12 +46,12 @@ public class AuthServiceImpl implements AuthService {
 
             var auditLog = AuditLogEntity
                 .builder()
+                .created(Timestamp.from(Instant.now()))
                 .employee(employee)
                 .actionType("Login")
                 .notes("Successful")
                 .build();
 
-            // cascade = CascadeType.ALL will save relationship attached
             auditLogRepository.save(auditLog);
             employeeRepository.save(employee);
 

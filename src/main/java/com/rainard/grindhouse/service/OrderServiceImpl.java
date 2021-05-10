@@ -1,108 +1,154 @@
 package com.rainard.grindhouse.service;
 
-import com.rainard.grindhouse.model.OrderWithItems;
+import com.rainard.grindhouse.model.CapturedItem;
 import com.rainard.grindhouse.model.request.CreateOrderRequest;
 import com.rainard.grindhouse.model.request.UpdateOrderStateRequest;
 import com.rainard.grindhouse.model.request.ViewOrderByStateRequest;
 import com.rainard.grindhouse.model.request.ViewOrderRequest;
 import com.rainard.grindhouse.model.response.FailResponse;
+import com.rainard.grindhouse.persistence.entity.CustomerEntity;
+import com.rainard.grindhouse.persistence.entity.EmployeeEntity;
+import com.rainard.grindhouse.persistence.entity.ItemEntity;
+import com.rainard.grindhouse.persistence.entity.OrdersEntity;
+import com.rainard.grindhouse.persistence.repository.CoffeeRepository;
+import com.rainard.grindhouse.persistence.repository.CustomerRepository;
 import com.rainard.grindhouse.persistence.repository.OrderRepository;
+import com.rainard.grindhouse.util.MapUtil;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.web.bind.annotation.RequestBody;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final CoffeeRepository coffeeRepository;
+    private final CustomerRepository customerRepository;
+    private final MapUtil mapper = new MapUtil();
 
     @Override
     public ResponseEntity<Object> viewOrder(ViewOrderRequest request) {
-
-        //session token check = true
-        //would retrieve employee id
-        if (isValidSession()) {
-            var optionalOrdersEntity = orderRepository.findById(request.getOrderId());
-
-            if (optionalOrdersEntity.isPresent()) {
-                var order = optionalOrdersEntity.get();
-
-                return ResponseEntity
-                    .ok(OrderWithItems.builder()
-                        .order(order)
-                        .build());
-            } else {
-                return failResponse("No Order Found", "Could not find any orders by given id.");
-            }
-        } else {
-            return failResponse("Unauthorized", "Please log in and retry");
-        }
+        var optionalOrdersEntity = orderRepository.findById(request.getOrderId());
+        if (optionalOrdersEntity.isPresent()) {
+            var ordersEntity = optionalOrdersEntity.get();
+            return ResponseEntity.ok(mapper.mapOrder(ordersEntity));
+        } else
+            return notFoundResponse("Could not find order");
     }
-
-
 
     @Override
     public ResponseEntity<Object> viewOrdersByState(ViewOrderByStateRequest request) {
+
         List<String> acceptedStates = Arrays.asList("inprogress", "history");
-            if (acceptedStates.contains(request.getState())) {
-                var ordersEntities = orderRepository.findAllByEmployee_IdAndState(Long.valueOf("1"),request.getState());
-                return ordersEntities.isEmpty() ?
-                    failResponse("Orders View Failed", "Could not retrieve ordersEntity of state: " + request.getState()) :
-                    ResponseEntity.ok(ordersEntities);
-            } else {
-                return failResponse("Unknown state", "Could not retrieve any orders of state: " + request.getState());
-            }
-    }
 
+        if (acceptedStates.contains(request.getState())
+            && Objects.nonNull(request.getOrderId())) {
 
-    @Override
-    public ResponseEntity<Object> createOrder(CreateOrderRequest request) {
-        if (Objects.nonNull(request.getOrderId()) && !request.) {
-            orderRepository.save(orderWithItems.getOrder());
-            return ResponseEntity.ok("Successfully created");
-        } else {
-            return failResponse("Create Failed", "Could not create order, check order and orderItems.");
-        }
+            var ordersEntities = orderRepository.findAllByEmployee_IdAndState(Long.valueOf("1"),request.getState());
+            return ordersEntities.isEmpty() ?
+                notFoundResponse("Could not retrieve orders of state: " + request.getState()) :
+                ResponseEntity.ok(mapper.mapOrders(ordersEntities));
+        } else
+            return badResponse();
+
     }
 
     @Override
-    public ResponseEntity<Object> updateOrderState(@RequestBody UpdateOrderStateRequest request) {
-        //session token check = true
-        //would retrieve employee id
-        if (true) {
-            var optionalOrdersEntity = orderRepository.findById(request.getOrderId());
-            if (optionalOrdersEntity.isPresent()) {
-                var order = optionalOrdersEntity.get();
+    public ResponseEntity<Object> createOrder(CreateOrderRequest request, EmployeeEntity employeeEntity) {
 
-                order.setState(request.getState());
-                orderRepository.save(order);
+        if (!request.getItems().isEmpty() &&
+            Objects.nonNull(request.getCustomer())) {
 
-                return ResponseEntity.ok("Successfully changed state.");
-            } else {
-                return failResponse("Update Failed", "Could not update order state.");
+            CustomerEntity customerEntity = customerRepository.findCustomerEntityByCustomerNameAndAndCustomerContact(request.getCustomer().getName(), request.getCustomer().getContact());
+
+            if (Objects.isNull(customerEntity)) {
+                customerEntity = customerRepository.save(CustomerEntity.builder()
+                    .customerName(request.getCustomer().getName())
+                    .customerContact(request.getCustomer().getContact())
+                    .created(Timestamp.from(Instant.now()))
+                    .isValid(true)
+                    .build());
             }
-        } else {
-            return failResponse("Unauthorized", "Please log in and retry");
-        }
 
+            OrdersEntity ordersEntity = orderRepository.save(OrdersEntity.builder()
+                .created(Timestamp.from(Instant.now()))
+                .version(1)
+                .state("inprogress")
+                .employee(employeeEntity)
+                .customer(customerEntity)
+                .build());
+
+            List<ItemEntity> items = generateItems(request.getItems(), ordersEntity);
+            if (Objects.isNull(items))
+                return notFoundResponse("Could not find coffee");
+
+            ordersEntity.setItems(items);
+            orderRepository.save(ordersEntity);
+
+            return ResponseEntity.ok(ordersEntity.toString());
+
+        } else
+            return badResponse();
     }
 
-    private ResponseEntity<Object> failResponse(String error, String message) {
-        return ResponseEntity.status(400).body(FailResponse.builder()
-            .error(error)
+    private List<ItemEntity> generateItems(List<CapturedItem> capturedItems, OrdersEntity ordersEntity) {
+        List<ItemEntity> items = new ArrayList<>();
+
+        for (CapturedItem item : capturedItems) {
+            var coffeeEntity = coffeeRepository.findById(item.getCoffeeId());
+            if (coffeeEntity.isEmpty()) {
+                return null;
+            } else
+                items.add(ItemEntity.builder()
+                    .quantity(item.getQuantity())
+                    .orderVersion(1)
+                    .cream(item.isCream())
+                    .milk(item.isMilk())
+                    .sugar(item.isSugar())
+                    .coffee(coffeeEntity.get())
+                    .order(ordersEntity)
+                    .build());
+        }
+        return items;
+    }
+
+    @Override
+    public ResponseEntity<Object> updateOrderState(UpdateOrderStateRequest request) {
+        var optionalOrdersEntity = orderRepository.findById(request.getOrderId());
+
+        if (optionalOrdersEntity.isPresent()) {
+            var order = optionalOrdersEntity.get();
+            order.setState(request.getState());
+            orderRepository.save(order);
+
+            return ResponseEntity.ok("Successfully changed state.");
+        } else
+            return badResponse();
+    }
+
+    private ResponseEntity<Object> notFoundResponse(String message) {
+        return ResponseEntity.status(404).body(FailResponse.builder()
+            .error("Not Found")
             .message(message)
             .build());
     }
 
-
+    private ResponseEntity<Object> badResponse() {
+        return ResponseEntity.status(400).body(FailResponse.builder()
+            .error("Failed")
+            .message("Please enter a valid request body.")
+            .build());
+    }
 }

@@ -3,7 +3,7 @@ package com.rainard.grindhouse.model.response;
 
 import java.util.List;
 
-import com.rainard.grindhouse.model.Coffee;
+import com.rainard.grindhouse.model.domain.Coffee;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
