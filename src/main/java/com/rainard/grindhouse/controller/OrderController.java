@@ -31,9 +31,10 @@ public class OrderController {
         return middleware(request.getSessionToken(), orderService.viewOrder(request));
     }
 
-    @PostMapping("ordersEntity/view")
+    @PostMapping("orders/view")
     public ResponseEntity<Object> viewOrdersByState(@RequestBody ViewOrderByStateRequest request) {
-        return middleware(request.getSessionToken(), orderService.viewOrdersByState(request));
+        var id = sessionMiddleware.isSession(request.getSessionToken());
+        return Objects.isNull(id) ? authUtil.unauthorisedUser() :  orderService.viewOrdersByState(request, id);
     }
 
     @PostMapping("order/create")
@@ -42,7 +43,7 @@ public class OrderController {
         return Objects.isNull(id) ? authUtil.unauthorisedUser() :  orderService.createOrder(request, sessionMiddleware.isSession(request.getSessionToken()));
     }
 
-    @PatchMapping("order/update/state")
+    @PostMapping("order/update/state")
     public ResponseEntity<Object> updateOrderState(@RequestBody UpdateOrderStateRequest request) {
         return middleware(request.getSessionToken(), orderService.updateOrderState(request));
     }

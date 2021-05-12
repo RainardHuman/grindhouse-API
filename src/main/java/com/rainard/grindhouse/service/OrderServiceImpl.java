@@ -1,12 +1,13 @@
 package com.rainard.grindhouse.service;
 
-import com.rainard.grindhouse.cache.repository.EmployeeRedisRepository;
 import com.rainard.grindhouse.model.CapturedItem;
 import com.rainard.grindhouse.model.request.CreateOrderRequest;
 import com.rainard.grindhouse.model.request.UpdateOrderStateRequest;
 import com.rainard.grindhouse.model.request.ViewOrderByStateRequest;
 import com.rainard.grindhouse.model.request.ViewOrderRequest;
 import com.rainard.grindhouse.model.response.FailResponse;
+import com.rainard.grindhouse.model.response.ViewOrderResponse;
+import com.rainard.grindhouse.model.response.ViewOrdersResponse;
 import com.rainard.grindhouse.persistence.entity.CustomerEntity;
 import com.rainard.grindhouse.persistence.entity.EmployeeEntity;
 import com.rainard.grindhouse.persistence.entity.ItemEntity;
@@ -39,7 +40,6 @@ public class OrderServiceImpl implements OrderService {
     private final CoffeeRepository coffeeRepository;
     private final CustomerRepository customerRepository;
     private final EmployeeRepository employeeRepository;
-    private final EmployeeRedisRepository employeeRedisRepository;
     private final MapUtil mapper = new MapUtil();
 
     @Override
@@ -47,23 +47,26 @@ public class OrderServiceImpl implements OrderService {
         var optionalOrdersEntity = orderRepository.findById(request.getOrderId());
         if (optionalOrdersEntity.isPresent()) {
             var ordersEntity = optionalOrdersEntity.get();
-            return ResponseEntity.ok(mapper.mapOrder(ordersEntity));
+            return ResponseEntity.ok(ViewOrderResponse.builder()
+                .order(mapper.mapOrder(ordersEntity))
+                .build());
         } else
             return notFoundResponse("Could not find order");
     }
 
     @Override
-    public ResponseEntity<Object> viewOrdersByState(ViewOrderByStateRequest request) {
+    public ResponseEntity<Object> viewOrdersByState(ViewOrderByStateRequest request, Long employeeId) {
 
         List<String> acceptedStates = Arrays.asList("inprogress", "history");
 
-        if (acceptedStates.contains(request.getState())
-            && Objects.nonNull(request.getOrderId())) {
+        if (acceptedStates.contains(request.getState())) {
 
-            var ordersEntities = orderRepository.findAllByEmployee_IdAndState(Long.valueOf("1"),request.getState());
+            var ordersEntities = orderRepository.findAllByEmployee_IdAndState(employeeId,request.getState());
             return ordersEntities.isEmpty() ?
                 notFoundResponse("Could not retrieve orders of state: " + request.getState()) :
-                ResponseEntity.ok(mapper.mapOrders(ordersEntities));
+                ResponseEntity.ok(ViewOrdersResponse.builder()
+                    .orders(mapper.mapOrders(ordersEntities))
+                    .build());
         } else
             return badResponse();
 

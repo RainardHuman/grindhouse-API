@@ -19,6 +19,7 @@ import java.util.Objects;
 public class MapUtil {
     public Coffee mapCoffee(CoffeeEntity coffeeEntity) {
         return Coffee.builder()
+                .id(coffeeEntity.getId())
                 .name(coffeeEntity.getCoffeeName())
                 .description(coffeeEntity.getCoffeeDescription())
                 .price(coffeeEntity.getCoffeePrice())
@@ -43,9 +44,7 @@ public class MapUtil {
 
     public Employee mapEmployee(EmployeeEntity employeeEntity) {
         return Employee.builder()
-            .id(employeeEntity.getId())
             .name(employeeEntity.getEmployeeName())
-            .isLoggedIn(employeeEntity.getIsLoggedIn())
             .build();
     }
 

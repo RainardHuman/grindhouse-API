@@ -15,7 +15,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class LoginResponse {
-    private Long employeeId;
     private String sessionToken;
     private String employeeName;
     private List<Coffee> coffees;

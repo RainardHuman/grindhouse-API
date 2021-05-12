@@ -62,7 +62,6 @@ public class AuthServiceImpl implements AuthService {
                 .ok(LoginResponse.builder()
                     .sessionToken(sessionToken)
                     .coffees(mapper.mapCoffees(coffeeEntityList))
-                    .employeeId(employee.getId())
                     .employeeName(employee.getEmployeeName())
                     .build());
         } else {
