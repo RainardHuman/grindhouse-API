@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -19,40 +20,36 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@AllArgsConstructor
-@Data
 @Entity
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@ToString(callSuper = true)
 @SuperBuilder
-@Table(name = "coffee")
-public class CoffeeEntity extends AbstractBaseEntity {
+@Table(name = "product")
+public class ProductEntity extends AbstractBaseEntity {
 
-    @Column(name = "coffee_name")
-    private String coffeeName;
+    @Column(name = "prod_name")
+    private String prodName;
 
-    @Column(name = "coffee_price")
-    private String coffeePrice;
+    @Column(name = "prod_price")
+    private BigDecimal prodPrice;
 
-    @Column(name = "coffee_description")
-    private String coffeeDescription;
+    @Column(name = "description")
+    private String description;
 
-    @Builder.Default
     @Column(name = "has_milk")
     private Boolean hasMilk = false;
 
-    @Builder.Default
     @Column(name = "has_cream")
     private Boolean hasCream = false;
 
-    @Builder.Default
     @Column(name = "has_sugar")
     private Boolean hasSugar = false;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "coffee", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @Column(name = "has_condiments")
+    private Boolean hasCondiments = false;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemEntity> items;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ingredient", cascade = CascadeType.ALL)
+    private List<IngredientEntity> ingredients;
 
 }

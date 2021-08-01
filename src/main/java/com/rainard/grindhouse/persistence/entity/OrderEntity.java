@@ -11,46 +11,53 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@AllArgsConstructor
-@Data
-@Entity
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@ToString(callSuper = true)
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 @SuperBuilder
-@Table(name = "ordersEntity")
-public class OrdersEntity extends AbstractBaseEntity {
+@Table(name = "order")
+@Entity
+@Getter
+@Setter
+@ToString(exclude = {"customer", "employee", "items"})
+public class OrderEntity extends AbstractBaseEntity {
 
     @Column(name = "state")
     private String state;
 
-    @Column(name = "version")
-    private Integer version;
+    @Column(name= "total")
+    private BigDecimal total;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @CreatedDate
+    @Column(name = "created")
+    private Timestamp created;
+
+    @LastModifiedDate
+    @Column(name = "updated")
+    private Timestamp updated;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_cust_id")
     private CustomerEntity customer;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "fk_emp_id")
     private EmployeeEntity employee;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<ItemEntity> items;
-
 }

@@ -1,17 +1,11 @@
 package com.rainard.grindhouse.service;
 
-import com.rainard.grindhouse.model.CapturedItem;
 import com.rainard.grindhouse.model.request.CreateOrderRequest;
 import com.rainard.grindhouse.model.request.UpdateOrderStateRequest;
 import com.rainard.grindhouse.model.request.ViewOrderByStateRequest;
 import com.rainard.grindhouse.model.request.ViewOrderRequest;
-import com.rainard.grindhouse.model.response.FailResponse;
 import com.rainard.grindhouse.model.response.ViewOrderResponse;
 import com.rainard.grindhouse.model.response.ViewOrdersResponse;
-import com.rainard.grindhouse.persistence.entity.CustomerEntity;
-import com.rainard.grindhouse.persistence.entity.EmployeeEntity;
-import com.rainard.grindhouse.persistence.entity.ItemEntity;
-import com.rainard.grindhouse.persistence.entity.OrdersEntity;
 import com.rainard.grindhouse.persistence.repository.CoffeeRepository;
 import com.rainard.grindhouse.persistence.repository.CustomerRepository;
 import com.rainard.grindhouse.persistence.repository.EmployeeRepository;
@@ -20,13 +14,6 @@ import com.rainard.grindhouse.util.MapUtil;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

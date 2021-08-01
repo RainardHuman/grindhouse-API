@@ -16,24 +16,18 @@ import java.util.Date;
 import java.util.List;
 
 @SuperBuilder
-@Table(name = "employee")
+@Table(name = "inventory")
 @Entity
 @Getter
 @Setter
-@ToString(exclude = {"empNumber","empPassword","orders", "auditLogs"})
-public class EmployeeEntity extends AbstractBaseEntity {
+@ToString(exclude = {"ingredients"})
+public class InventoryEntity extends AbstractBaseEntity {
 
-    @Column(name = "emp_number")
-    private String empNumber;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "emp_password")
-    private String empPassword;
-
-    @Column(name = "emp_name")
-    private String empName;
-
-    @Column(name = "logged_in")
-    private Boolean isLoggedIn;
+    @Column(name = "allergens")
+    private String allergens;
 
     @CreatedDate
     @Column(name = "created")
@@ -43,12 +37,8 @@ public class EmployeeEntity extends AbstractBaseEntity {
     @Column(name = "updated")
     private Date updated;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<OrderEntity> orders;
-
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<AuditLogEntity> auditLogs;
+    private List<IngredientEntity> ingredients;
 
 }

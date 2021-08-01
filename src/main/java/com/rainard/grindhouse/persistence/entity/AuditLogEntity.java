@@ -17,21 +17,24 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@AllArgsConstructor
-@Data
-@Entity
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@ToString(callSuper = true)
+import org.springframework.data.annotation.CreatedDate;
+
+import java.sql.Timestamp;
+
 @SuperBuilder
 @Table(name = "audit_log")
+@Entity
 public class AuditLogEntity extends AbstractBaseEntity {
 
     @Column(name = "action_type")
     private String actionType;
 
-    @Column(name = "notes")
-    private String notes;
+    @Column(name = "note")
+    private String note;
+
+    @CreatedDate
+    @Column(name = "created")
+    private Timestamp created;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")

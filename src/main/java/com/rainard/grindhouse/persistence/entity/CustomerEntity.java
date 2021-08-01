@@ -9,40 +9,45 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 @AllArgsConstructor
-@Data
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@ToString(callSuper = true)
 @SuperBuilder
 @Table(name = "customer")
 public class CustomerEntity extends AbstractBaseEntity {
 
-    @Column(name = "customer_name")
+    @Column(name = "cust_name")
     private String customerName;
 
-    @Column(name = "customer_contact")
+    @Column(name = "cell")
     private String customerContact;
 
     @Column(name = "order_count")
     private Integer orderCount;
 
-    @Column(name = "is_valid")
+    @Column(name = "isValid")
     private Boolean isValid;
 
+    @CreatedDate
+    @Column(name = "created")
+    private Timestamp created;
+
+    @LastModifiedDate
+    @Column(name = "updated")
+    private Timestamp updated;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private List<OrdersEntity> orders;
+    private List<OrderEntity> orders;
 
 }

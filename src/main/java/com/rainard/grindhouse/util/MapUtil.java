@@ -5,11 +5,11 @@ import com.rainard.grindhouse.model.domain.Employee;
 import com.rainard.grindhouse.model.domain.Item;
 import com.rainard.grindhouse.model.domain.Order;
 import com.rainard.grindhouse.model.domain.Product;
-import com.rainard.grindhouse.persistence.entity.CoffeeEntity;
+import com.rainard.grindhouse.persistence.entity.ProductEntity;
 import com.rainard.grindhouse.persistence.entity.CustomerEntity;
 import com.rainard.grindhouse.persistence.entity.EmployeeEntity;
 import com.rainard.grindhouse.persistence.entity.ItemEntity;
-import com.rainard.grindhouse.persistence.entity.OrdersEntity;
+import com.rainard.grindhouse.persistence.entity.OrderEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,22 +17,22 @@ import java.util.Objects;
 
 
 public class MapUtil {
-    public Product mapCoffee(CoffeeEntity coffeeEntity) {
+    public Product mapCoffee(ProductEntity productEntity) {
         return Product.builder()
-                .id(coffeeEntity.getId())
-                .prodName(coffeeEntity.getCoffeeName())
-                .prodDesc(coffeeEntity.getCoffeeDescription())
-                .prodPrice(coffeeEntity.getCoffeePrice())
-                .hasMilk(coffeeEntity.getHasMilk())
-                .hasCream(coffeeEntity.getHasCream())
-                .hasSugar(coffeeEntity.getHasSugar())
+                .id(productEntity.getId())
+                .prodName(productEntity.getCoffeeName())
+                .prodDesc(productEntity.getCoffeeDescription())
+                .prodPrice(productEntity.getCoffeePrice())
+                .hasMilk(productEntity.getHasMilk())
+                .hasCream(productEntity.getHasCream())
+                .hasSugar(productEntity.getHasSugar())
                 .build();
     }
 
-    public List<Product> mapCoffees(List<CoffeeEntity> coffeeEntityList) {
-        List<Product> coffees = new ArrayList<>();
-        coffeeEntityList.forEach( coffeeEntity -> coffees.add(mapCoffee(coffeeEntity)));
-        return coffees;
+    public List<Product> mapCoffees(List<ProductEntity> productEntityList) {
+        List<Product> products = new ArrayList<>();
+        productEntityList.forEach(productEntity -> products.add(mapCoffee(productEntity)));
+        return products;
     }
 
     public Customer mapCustomer(CustomerEntity customerEntity) {
@@ -65,29 +65,29 @@ public class MapUtil {
         return items;
     }
 
-    public Order mapOrder(OrdersEntity ordersEntity) {
+    public Order mapOrder(OrderEntity orderEntity) {
         return Order.builder()
-            .id(ordersEntity.getId())
-            .created(ordersEntity.getCreated())
-            .lastUpdated(ordersEntity.getUpdated())
-            .state(ordersEntity.getState())
-            .version(ordersEntity.getVersion())
-            .customer(mapCustomer(ordersEntity.getCustomer()))
-            .employee(Objects.isNull(ordersEntity.getEmployee()) ? null : mapEmployee(ordersEntity.getEmployee()))
-            .items(mapItems(ordersEntity.getItems()))
+            .id(orderEntity.getId())
+            .created(orderEntity.getCreated())
+            .lastUpdated(orderEntity.getUpdated())
+            .state(orderEntity.getState())
+            .version(orderEntity.getVersion())
+            .customer(mapCustomer(orderEntity.getCustomer()))
+            .employee(Objects.isNull(orderEntity.getEmployee()) ? null : mapEmployee(orderEntity.getEmployee()))
+            .items(mapItems(orderEntity.getItems()))
             .build();
     }
 
-    public List<Order> mapOrders(List<OrdersEntity> ordersEntityList) {
+    public List<Order> mapOrders(List<OrderEntity> orderEntityList) {
         List<Order> orders = new ArrayList<>();
-        ordersEntityList.forEach( ordersEntity -> orders.add(mapOrder(ordersEntity)));
+        orderEntityList.forEach(ordersEntity -> orders.add(mapOrder(ordersEntity)));
         return orders;
     }
 
 
-    public CoffeeEntity mapCoffeeEntity(Product coffeeEntity) {
-        return CoffeeEntity.builder()
-            .coffeeName(coffeeEntity.getProdName())
+    public ProductEntity mapCoffeeEntity(Product coffeeEntity) {
+        return ProductEntity.builder()
+            .prodName(coffeeEntity.getProdName())
             .coffeeDescription(coffeeEntity.getProdDesc())
             .coffeePrice(coffeeEntity.getProdPrice())
             .hasMilk(coffeeEntity.getHasMilk())
@@ -113,7 +113,7 @@ public class MapUtil {
 
     public ItemEntity mapItemEntity(Item itemEntity) {
         return ItemEntity.builder()
-            .coffee(mapCoffeeEntity(itemEntity.getCoffee()))
+            .product(mapCoffeeEntity(itemEntity.getCoffee()))
             .milk(itemEntity.getMilk())
             .cream(itemEntity.getCream())
             .sugar(itemEntity.getSugar())
@@ -128,8 +128,8 @@ public class MapUtil {
         return items;
     }
 
-    public OrdersEntity mapOrdersEntity(Order ordersEntity) {
-        return OrdersEntity.builder()
+    public OrderEntity mapOrdersEntity(Order ordersEntity) {
+        return OrderEntity.builder()
             .state(ordersEntity.getState())
             .version(ordersEntity.getVersion())
             .customer(mapCustomerEntity(ordersEntity.getCustomer()))

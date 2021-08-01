@@ -2,7 +2,6 @@ package com.rainard.grindhouse.service;
 
 import com.rainard.grindhouse.cache.repository.EmployeeRedisRepository;
 import com.rainard.grindhouse.model.request.LoginRequest;
-import com.rainard.grindhouse.model.response.FailResponse;
 import com.rainard.grindhouse.model.response.LoginResponse;
 import com.rainard.grindhouse.persistence.entity.AuditLogEntity;
 import com.rainard.grindhouse.persistence.repository.AuditLogRepository;
@@ -53,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
                 .created(Timestamp.from(Instant.now()))
                 .employee(employee)
                 .actionType("Login")
-                .notes("Successful")
+                .note("Successful")
                 .build();
 
             auditLogRepository.save(auditLog);
@@ -82,7 +81,7 @@ public class AuthServiceImpl implements AuthService {
                     .employee(employee)
                     .created(Timestamp.from(Instant.now()))
                     .actionType("Log out")
-                    .notes("Successful")
+                    .note("Successful")
                     .build();
 
                 employeeRedisRepository.delete(sessionToken);
