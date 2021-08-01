@@ -10,6 +10,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class ViewOrderByStateRequest {
-    private String sessionToken;
     private String state;
 }

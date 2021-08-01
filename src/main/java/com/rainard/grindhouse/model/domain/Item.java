@@ -15,5 +15,5 @@ public class Item {
     private Boolean sugar;
     private Boolean cream;
     private Integer orderVersion;
-    private Coffee coffee;
+    private Product coffee;
 }

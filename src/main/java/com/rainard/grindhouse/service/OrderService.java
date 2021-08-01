@@ -7,15 +7,19 @@ import com.rainard.grindhouse.model.request.ViewOrderByStateRequest;
 import com.rainard.grindhouse.model.request.ViewOrderRequest;
 
 
+import com.rainard.grindhouse.model.response.ViewOrderResponse;
+
+import com.rainard.grindhouse.model.response.ViewOrdersResponse;
+
 import org.springframework.http.ResponseEntity;
 
 public interface OrderService {
 
-    ResponseEntity<Object> viewOrder(ViewOrderRequest request);
+    ViewOrderResponse viewOrder(ViewOrderRequest request);
 
-    ResponseEntity<Object> viewOrdersByState(ViewOrderByStateRequest request, Long employeeId);
+    ViewOrdersResponse viewOrdersByState(ViewOrderByStateRequest request, Long employeeId);
 
-    ResponseEntity<Object> createOrder(CreateOrderRequest request, Long id);
+    boolean createOrder(CreateOrderRequest request, Long id);
 
     ResponseEntity<Object> updateOrderState(UpdateOrderStateRequest request);
 

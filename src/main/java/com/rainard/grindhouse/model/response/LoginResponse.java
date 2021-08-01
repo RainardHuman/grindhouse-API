@@ -3,7 +3,8 @@ package com.rainard.grindhouse.model.response;
 
 import java.util.List;
 
-import com.rainard.grindhouse.model.domain.Coffee;
+
+import com.rainard.grindhouse.model.domain.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,5 +18,5 @@ import lombok.experimental.SuperBuilder;
 public class LoginResponse {
     private String sessionToken;
     private String employeeName;
-    private List<Coffee> coffees;
+    private List<Product> coffees;
 }

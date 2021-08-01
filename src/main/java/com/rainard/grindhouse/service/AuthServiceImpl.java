@@ -1,6 +1,7 @@
 package com.rainard.grindhouse.service;
 
 import com.rainard.grindhouse.cache.repository.EmployeeRedisRepository;
+import com.rainard.grindhouse.model.request.LoginRequest;
 import com.rainard.grindhouse.model.response.FailResponse;
 import com.rainard.grindhouse.model.response.LoginResponse;
 import com.rainard.grindhouse.persistence.entity.AuditLogEntity;
@@ -33,9 +34,9 @@ public class AuthServiceImpl implements AuthService {
     private final AuthUtil authUtil = new AuthUtil();
 
     @Override
-    public ResponseEntity<Object> login(final String employeeNumber, final String employeePassword) {
+    public LoginResponse login(LoginRequest loginRequest) {
         var optionalEmployeeEntity = employeeRepository
-            .findEmployeeEntityByEmployeeNumberAndAndEmployeePassword(employeeNumber, employeePassword);
+            .findEmployeeEntityByEmployeeNumberAndAndEmployeePassword(loginRequest.getEmployeeNumber(), loginRequest.getEmployeePassword());
 
         if (optionalEmployeeEntity.isPresent()) {
             var employee = optionalEmployeeEntity.get();
@@ -58,19 +59,13 @@ public class AuthServiceImpl implements AuthService {
             auditLogRepository.save(auditLog);
             employeeRepository.save(employee);
 
-            return ResponseEntity
-                .ok(LoginResponse.builder()
+            return LoginResponse.builder()
                     .sessionToken(sessionToken)
                     .coffees(mapper.mapCoffees(coffeeEntityList))
                     .employeeName(employee.getEmployeeName())
-                    .build());
+                    .build();
         } else {
-            return ResponseEntity
-                .status(400)
-                .body(FailResponse.builder()
-                    .error("Login failed")
-                    .message("Incorrect employee number or password.")
-                    .build());
+            throw new RuntimeException("This just fucking broke");
         }
     }
 
@@ -97,12 +92,7 @@ public class AuthServiceImpl implements AuthService {
                 return ResponseEntity.ok("Logged out");
 
         } else {
-            return ResponseEntity
-                .status(400)
-                .body(FailResponse.builder()
-                    .error("Logout failed")
-                    .message("Employee not found")
-                    .build());
+            throw new RuntimeException("employee entity not found");
         }
     }
 }

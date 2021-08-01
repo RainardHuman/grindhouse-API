@@ -5,17 +5,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Column;
+
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
 @SuperBuilder
-public class Coffee {
+public class Product {
     private Long id;
-    private String name;
-    private String price;
-    private String description;
+    @Column(name = "prod_name")
+    private String prodName;
+    private String prodPrice;
+    private String prodDesc;
     private Boolean hasMilk;
     private Boolean hasCream;
     private Boolean hasSugar;
+    private Boolean hadCondiments;
 }
 

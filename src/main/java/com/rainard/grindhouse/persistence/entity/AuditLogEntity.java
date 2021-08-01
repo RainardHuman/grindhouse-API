@@ -35,8 +35,6 @@ public class AuditLogEntity extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private EmployeeEntity employee;
 
 }

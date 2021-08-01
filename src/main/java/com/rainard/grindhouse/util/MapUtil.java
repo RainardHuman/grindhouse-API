@@ -1,10 +1,10 @@
 package com.rainard.grindhouse.util;
 
-import com.rainard.grindhouse.model.domain.Coffee;
 import com.rainard.grindhouse.model.domain.Customer;
 import com.rainard.grindhouse.model.domain.Employee;
 import com.rainard.grindhouse.model.domain.Item;
 import com.rainard.grindhouse.model.domain.Order;
+import com.rainard.grindhouse.model.domain.Product;
 import com.rainard.grindhouse.persistence.entity.CoffeeEntity;
 import com.rainard.grindhouse.persistence.entity.CustomerEntity;
 import com.rainard.grindhouse.persistence.entity.EmployeeEntity;
@@ -17,20 +17,20 @@ import java.util.Objects;
 
 
 public class MapUtil {
-    public Coffee mapCoffee(CoffeeEntity coffeeEntity) {
-        return Coffee.builder()
+    public Product mapCoffee(CoffeeEntity coffeeEntity) {
+        return Product.builder()
                 .id(coffeeEntity.getId())
-                .name(coffeeEntity.getCoffeeName())
-                .description(coffeeEntity.getCoffeeDescription())
-                .price(coffeeEntity.getCoffeePrice())
+                .prodName(coffeeEntity.getCoffeeName())
+                .prodDesc(coffeeEntity.getCoffeeDescription())
+                .prodPrice(coffeeEntity.getCoffeePrice())
                 .hasMilk(coffeeEntity.getHasMilk())
                 .hasCream(coffeeEntity.getHasCream())
                 .hasSugar(coffeeEntity.getHasSugar())
                 .build();
     }
 
-    public List<Coffee> mapCoffees(List<CoffeeEntity> coffeeEntityList) {
-        List<Coffee> coffees = new ArrayList<>();
+    public List<Product> mapCoffees(List<CoffeeEntity> coffeeEntityList) {
+        List<Product> coffees = new ArrayList<>();
         coffeeEntityList.forEach( coffeeEntity -> coffees.add(mapCoffee(coffeeEntity)));
         return coffees;
     }
@@ -85,11 +85,11 @@ public class MapUtil {
     }
 
 
-    public CoffeeEntity mapCoffeeEntity(Coffee coffeeEntity) {
+    public CoffeeEntity mapCoffeeEntity(Product coffeeEntity) {
         return CoffeeEntity.builder()
-            .coffeeName(coffeeEntity.getName())
-            .coffeeDescription(coffeeEntity.getDescription())
-            .coffeePrice(coffeeEntity.getPrice())
+            .coffeeName(coffeeEntity.getProdName())
+            .coffeeDescription(coffeeEntity.getProdDesc())
+            .coffeePrice(coffeeEntity.getProdPrice())
             .hasMilk(coffeeEntity.getHasMilk())
             .hasCream(coffeeEntity.getHasCream())
             .hasSugar(coffeeEntity.getHasSugar())
