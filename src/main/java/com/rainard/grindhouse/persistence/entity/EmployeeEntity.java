@@ -1,27 +1,28 @@
 package com.rainard.grindhouse.persistence.entity;
 
-import com.rainard.grindhouse.persistence.entity.common.AbstractBaseEntity;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import java.util.Date;
 import java.util.List;
 
-@SuperBuilder
-@Table(name = "employee")
 @Entity
-@Getter
-@Setter
-@ToString(exclude = {"empNumber","empPassword","orders", "auditLogs"})
-public class EmployeeEntity extends AbstractBaseEntity {
+@Table(name = "employee")
+public class EmployeeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "emp_id")
+    private long id;
 
     @Column(name = "emp_number")
     private String empNumber;
@@ -43,12 +44,15 @@ public class EmployeeEntity extends AbstractBaseEntity {
     @Column(name = "updated")
     private Date updated;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    @ToString.Exclude
+    @OneToOne(mappedBy = "employee")
+    private ShopEmployeeEntity shopEmployee;
+
+    @OneToMany(mappedBy = "employee")
     private List<OrderEntity> orders;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    @ToString.Exclude
+    @OneToMany(mappedBy = "employee")
     private List<AuditLogEntity> auditLogs;
 
+    @OneToOne(mappedBy = "employee")
+    private ShopOwnerEntity shopOwner;
 }

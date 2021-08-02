@@ -1,5 +1,7 @@
 package com.rainard.grindhouse.persistence.entity;
 
+import com.rainard.grindhouse.enums.RoleEnum;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,23 +9,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Table(name = "ingredient")
 @Entity
-public class IngredientEntity {
+@Table(name = "shop_employee")
+public class ShopEmployeeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ingr_id")
+    @Column(name = "shop_emp_id")
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "prod_id")
-    private ProductEntity product;
+    @Column(name = "role")
+    private RoleEnum role;
+
+    @OneToOne
+    @JoinColumn(name = "emp_id")
+    private EmployeeEntity employee;
 
     @ManyToOne
-    @JoinColumn(name = "inv_id")
-    private InventoryEntity inventory;
-
+    @JoinColumn(name = "shop_id")
+    private ShopEntity shop;
 }

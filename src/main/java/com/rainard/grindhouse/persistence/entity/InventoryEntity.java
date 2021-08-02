@@ -1,27 +1,27 @@
 package com.rainard.grindhouse.persistence.entity;
 
-import com.rainard.grindhouse.persistence.entity.common.AbstractBaseEntity;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import java.util.Date;
 import java.util.List;
 
-@SuperBuilder
 @Table(name = "inventory")
 @Entity
-@Getter
-@Setter
-@ToString(exclude = {"ingredients"})
-public class InventoryEntity extends AbstractBaseEntity {
+public class InventoryEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "inv_id")
+    private long id;
 
     @Column(name = "description")
     private String description;
@@ -37,8 +37,7 @@ public class InventoryEntity extends AbstractBaseEntity {
     @Column(name = "updated")
     private Date updated;
 
-    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
-    @ToString.Exclude
+    @OneToMany
     private List<IngredientEntity> ingredients;
 
 }

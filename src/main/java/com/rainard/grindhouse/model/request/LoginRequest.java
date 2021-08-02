@@ -1,16 +1,10 @@
 package com.rainard.grindhouse.model.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 
-@AllArgsConstructor
-@Data
-@NoArgsConstructor
-@SuperBuilder
+@Validated
 public class LoginRequest {
     @NotBlank(message = "employeeNumber can not be null or empty")
     private String employeeNumber;

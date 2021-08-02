@@ -1,30 +1,26 @@
 package com.rainard.grindhouse.persistence.entity;
 
-import com.rainard.grindhouse.persistence.entity.common.AbstractBaseEntity;
+import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
-
-import org.springframework.data.annotation.CreatedDate;
-
 import java.sql.Timestamp;
 
-@SuperBuilder
 @Table(name = "audit_log")
 @Entity
-public class AuditLogEntity extends AbstractBaseEntity {
+public class AuditLogEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "audit_id")
+    private long id;
 
     @Column(name = "action_type")
     private String actionType;
@@ -36,8 +32,8 @@ public class AuditLogEntity extends AbstractBaseEntity {
     @Column(name = "created")
     private Timestamp created;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id")
+    @ManyToOne
+    @JoinColumn(name = "emp_id")
     private EmployeeEntity employee;
 
 }

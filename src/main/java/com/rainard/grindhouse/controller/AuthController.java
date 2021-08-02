@@ -19,13 +19,14 @@ import javax.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
+import static com.rainard.grindhouse.util.AuthUtil.unauthorisedUser;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
-    private final AuthUtil authUtil = new AuthUtil();
     private final SessionMiddleware middleware;
 
     @PostMapping(value = "/auth/login", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,6 +40,6 @@ public class AuthController {
         @NotBlank(message = "no session token provided")
         @RequestHeader("Authorization") String sessionToken) {
         var id = middleware.isSession(sessionToken);
-        return Objects.isNull(id) ? authUtil.unauthorisedUser() : authService.logout(sessionToken, id);
+        return Objects.isNull(id) ? unauthorisedUser() : authService.logout(sessionToken, id);
     }
 }

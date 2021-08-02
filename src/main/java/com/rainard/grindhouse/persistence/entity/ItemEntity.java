@@ -1,15 +1,22 @@
 package com.rainard.grindhouse.persistence.entity;
 
-import com.rainard.grindhouse.persistence.entity.common.AbstractBaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-import lombok.experimental.SuperBuilder;
-
-import javax.persistence.*;
-
-@SuperBuilder
 @Table(name = "item")
 @Entity
-public class ItemEntity extends AbstractBaseEntity {
+public class ItemEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "item_id")
+    private long id;
 
     @Column(name = "quantity")
     private Integer quantity;
@@ -26,12 +33,12 @@ public class ItemEntity extends AbstractBaseEntity {
     @Column(name = "condiments")
     private Boolean condiments;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_order_id")
+    @ManyToOne
+    @JoinColumn(name = "order_id")
     private OrderEntity order;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_prod_id")
+    @ManyToOne
+    @JoinColumn(name = "prod_id")
     private ProductEntity product;
 
 }

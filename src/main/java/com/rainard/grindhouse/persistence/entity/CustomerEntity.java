@@ -1,31 +1,27 @@
 package com.rainard.grindhouse.persistence.entity;
 
-import com.rainard.grindhouse.persistence.entity.common.AbstractBaseEntity;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-@AllArgsConstructor
 @Entity
-@NoArgsConstructor
-@SuperBuilder
 @Table(name = "customer")
-public class CustomerEntity extends AbstractBaseEntity {
+public class CustomerEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "cust_id")
+    private long id;
 
     @Column(name = "cust_name")
     private String customerName;
@@ -47,7 +43,7 @@ public class CustomerEntity extends AbstractBaseEntity {
     @Column(name = "updated")
     private Timestamp updated;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer")
     private List<OrderEntity> orders;
 
 }
