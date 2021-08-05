@@ -15,13 +15,11 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table(name = "customer")
 public class CustomerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "cust_id")
-    private long id;
+    private Long custId;
 
     @Column(name = "cust_name")
     private String customerName;

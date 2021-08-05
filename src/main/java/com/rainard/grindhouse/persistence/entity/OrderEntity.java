@@ -9,14 +9,12 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Table(name = "order")
 @Entity
 public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "order_id")
-    private long id;
+    private Long orderId;
 
     @Column(name = "state")
     private String state;
@@ -33,11 +31,11 @@ public class OrderEntity {
     private Timestamp updated;
 
     @ManyToOne
-    @JoinColumn(name = "cust_id")
+    @JoinColumn(name = "custId")
     private CustomerEntity customer;
 
     @ManyToOne
-    @JoinColumn(name = "emp_id")
+    @JoinColumn(name = "empId")
     private EmployeeEntity employee;
 
     @OneToMany(mappedBy = "order")

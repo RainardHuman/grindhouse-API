@@ -13,22 +13,20 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "shop_employee")
 public class ShopEmployeeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "shop_emp_id")
-    private long id;
+    private Long shopEmpId;
 
     @Column(name = "role")
     private RoleEnum role;
 
     @OneToOne
-    @JoinColumn(name = "emp_id")
+    @JoinColumn(name = "empId")
     private EmployeeEntity employee;
 
     @ManyToOne
-    @JoinColumn(name = "shop_id")
+    @JoinColumn(name = "shopId")
     private ShopEntity shop;
 }

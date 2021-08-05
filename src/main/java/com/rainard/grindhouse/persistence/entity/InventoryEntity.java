@@ -14,14 +14,12 @@ import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
 
-@Table(name = "inventory")
 @Entity
 public class InventoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "inv_id")
-    private long id;
+    private Long invId;
 
     @Column(name = "description")
     private String description;

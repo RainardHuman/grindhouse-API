@@ -9,21 +9,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Table(name = "ingredient")
 @Entity
 public class IngredientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ingr_id")
-    private long id;
+    private Long ingrId;
 
     @ManyToOne
-    @JoinColumn(name = "prod_id")
+    @JoinColumn(name = "prodId")
     private ProductEntity product;
 
     @ManyToOne
-    @JoinColumn(name = "inv_id")
+    @JoinColumn(name = "invId")
     private InventoryEntity inventory;
 
 }
