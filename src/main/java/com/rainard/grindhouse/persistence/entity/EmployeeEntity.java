@@ -1,28 +1,25 @@
 package com.rainard.grindhouse.persistence.entity;
 
+import lombok.Setter;
+
+import lombok.ToString;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "employee")
+@Setter
+@ToString
 public class EmployeeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "emp_id")
-    private long id;
+    private long empId;
 
     @Column(name = "emp_number")
     private String empNumber;
@@ -48,11 +45,21 @@ public class EmployeeEntity {
     private ShopEmployeeEntity shopEmployee;
 
     @OneToMany(mappedBy = "employee")
+    @ToString.Exclude
     private List<OrderEntity> orders;
 
     @OneToMany(mappedBy = "employee")
-    private List<AuditLogEntity> auditLogs;
+    @ToString.Exclude
+    private List<AuditLogEntity> auditLogEntities;
 
     @OneToOne(mappedBy = "employee")
     private ShopOwnerEntity shopOwner;
+
+    public List<AuditLogEntity> getAuditLogEntities() {
+        return auditLogEntities;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
 }

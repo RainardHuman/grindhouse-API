@@ -11,14 +11,12 @@ import javax.persistence.Table;
 
 import java.util.List;
 
-@Table(name = "shop")
 @Entity
 public class ShopEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "shop_id")
-    private long id;
+    private Long shopId;
 
     @Column(name = "shop_name")
     private String shopName;

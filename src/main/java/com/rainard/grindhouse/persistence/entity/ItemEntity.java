@@ -9,14 +9,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Table(name = "item")
 @Entity
 public class ItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "item_id")
-    private long id;
+    private Long itemId;
 
     @Column(name = "quantity")
     private Integer quantity;
@@ -34,11 +32,11 @@ public class ItemEntity {
     private Boolean condiments;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "orderId")
     private OrderEntity order;
 
     @ManyToOne
-    @JoinColumn(name = "prod_id")
+    @JoinColumn(name = "prodId")
     private ProductEntity product;
 
 }

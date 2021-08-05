@@ -13,14 +13,12 @@ import javax.persistence.Table;
 
 import java.sql.Timestamp;
 
-@Table(name = "audit_log")
 @Entity
 public class AuditLogEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "audit_id")
-    private long id;
+    private Long auditId;
 
     @Column(name = "action_type")
     private String actionType;
@@ -33,7 +31,7 @@ public class AuditLogEntity {
     private Timestamp created;
 
     @ManyToOne
-    @JoinColumn(name = "emp_id")
+    @JoinColumn(name = "empId")
     private EmployeeEntity employee;
 
 }

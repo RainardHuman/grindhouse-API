@@ -12,13 +12,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "product")
 public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "prod_id")
-    private long id;
+    private Long prodId;
 
     @Column(name = "prod_name")
     private String prodName;
