@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost/grindhouse
-    username: root
-    password: Grootpan199!
+    url: {{LOCALHOST_MYSQL_URI}}
+    username: {{LOCAHOST_MYSQL_USERNAME}}
+    password: {{LOCAHOST_MYSQL_PASSWORD}}
   jpa:
     show-sql: false
     hibernate:

@@ -1,11 +1,13 @@
 package com.rainard.grindhouse.model.request;
 
+import lombok.Builder;
 import lombok.Data;
 
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 
+@Builder
 @Validated
 @Data
 public class LoginRequest {
