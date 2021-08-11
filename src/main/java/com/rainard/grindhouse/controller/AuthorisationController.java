@@ -1,7 +1,7 @@
 package com.rainard.grindhouse.controller;
 
-import com.rainard.grindhouse.model.request.LoginRequest;
-import com.rainard.grindhouse.model.response.LoginResponse;
+import com.rainard.grindhouse.dto.request.LoginRequest;
+import com.rainard.grindhouse.dto.response.LoginResponse;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 @RestController
 public class AuthorisationController {
@@ -23,7 +22,6 @@ public class AuthorisationController {
 
     @PostMapping(path = "/auth/logout")
     public ResponseEntity<Object> logout(
-        @NotBlank(message = "no session token provided")
         @RequestHeader("Authorization") String sessionToken) {
         return null;
     }
