@@ -23,10 +23,10 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long orderId;
 
-    @Column(name = "state")
+    @Column(name = "state", nullable = false)
     private String state;
 
-    @Column(name = "total")
+    @Column(name = "total", nullable = false)
     private BigDecimal total;
 
     @CreatedDate
@@ -37,12 +37,12 @@ public class OrderEntity {
     @Column(name = "updated")
     private Timestamp updated;
 
-    @ManyToOne
-    @JoinColumn(name = "custId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_cust_id")
     private CustomerEntity customer;
 
-    @ManyToOne
-    @JoinColumn(name = "empId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_emp_id")
     private EmployeeEntity employee;
 
     @OneToMany(mappedBy = "order")

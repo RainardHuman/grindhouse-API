@@ -14,11 +14,11 @@ public class ShopOwnerEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long shopOwnerId;
 
-    @OneToOne
-    @JoinColumn(name = "shopId")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "fk_shop_id")
     private ShopEntity shop;
 
-    @OneToOne
-    @JoinColumn(name = "empId")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "fk_emp_id")
     private EmployeeEntity employee;
 }

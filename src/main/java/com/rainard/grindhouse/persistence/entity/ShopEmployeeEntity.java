@@ -18,14 +18,14 @@ public class ShopEmployeeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long shopEmpId;
 
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     private RoleEnum role;
 
-    @OneToOne
-    @JoinColumn(name = "empId")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "fk_emp_id")
     private EmployeeEntity employee;
 
-    @ManyToOne
-    @JoinColumn(name = "shopId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_shop_id")
     private ShopEntity shop;
 }

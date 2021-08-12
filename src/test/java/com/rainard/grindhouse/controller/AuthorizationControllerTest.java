@@ -59,9 +59,7 @@ class AuthorizationControllerTest {
             arguments("f5384532", ""),
             arguments("", "password"),
             arguments("f5384532", null),
-            arguments(null, "password"),
-            arguments("", ""),
-            arguments(null, null)
+            arguments(null, "password")
         );
     }
 

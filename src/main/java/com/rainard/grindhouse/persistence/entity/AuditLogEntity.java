@@ -29,18 +29,18 @@ public class AuditLogEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long auditId;
 
-    @Column(name = "action_type")
+    @Column(name = "action_type", nullable = false)
     private String actionType;
 
-    @Column(name = "note")
+    @Column(name = "note", nullable = false)
     private String note;
 
     @CreatedDate
-    @Column(name = "created")
+    @Column(name = "created", nullable = false)
     private Timestamp created;
 
-    @ManyToOne
-    @JoinColumn(name = "empId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_emp_id")
     private EmployeeEntity employee;
 
 }

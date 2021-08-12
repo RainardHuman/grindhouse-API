@@ -28,24 +28,24 @@ public class EmployeeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long empId;
 
-    @Column(name = "emp_number")
+    @Column(name = "emp_number", nullable = false , unique = true)
     private String empNumber;
 
-    @Column(name = "emp_password")
+    @Column(name = "emp_password", nullable = false)
     private String empPassword;
 
     @Column(name = "emp_name", nullable = false)
     private String empName;
 
-    @Column(name = "logged_in")
+    @Column(name = "logged_in", nullable = false)
     private Boolean isLoggedIn;
 
     @CreatedDate
-    @Column(name = "created")
+    @Column(name = "created", nullable = false)
     private Date created;
 
     @LastModifiedDate
-    @Column(name = "updated")
+    @Column(name = "updated", nullable = false)
     private Date updated;
 
     @OneToOne(mappedBy = "employee")

@@ -15,27 +15,27 @@ public class ItemEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long itemId;
 
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "sugar")
+    @Column(name = "sugar", nullable = false)
     private Integer sugarQty;
 
-    @Column(name = "cream")
+    @Column(name = "cream", nullable = false)
     private Integer creamQty;
 
-    @Column(name = "milk")
+    @Column(name = "milk", nullable = false)
     private Boolean milk;
 
-    @Column(name = "condiments")
+    @Column(name = "condiments", nullable = false)
     private Boolean condiments;
 
-    @ManyToOne
-    @JoinColumn(name = "orderId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_order_id")
     private OrderEntity order;
 
-    @ManyToOne
-    @JoinColumn(name = "prodId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_prod_id")
     private ProductEntity product;
 
 }
