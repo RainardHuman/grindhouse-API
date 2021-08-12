@@ -1,5 +1,6 @@
 package com.rainard.grindhouse.persistence.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,12 +15,17 @@ public class IngredientEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ingrId;
 
-    @ManyToOne
-    @JoinColumn(name = "prodId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_prod_id")
     private ProductEntity product;
 
-    @ManyToOne
-    @JoinColumn(name = "invId")
-    private InventoryEntity inventory;
+    @Column(name = "ingr_name", nullable = false , unique = true)
+    private String ingrName;
+
+    @Column(name = "ingr_desc", nullable = false)
+    private String ingrDesc;
+
+    @Column(name = "ingr_allergens", nullable = false)
+    private String ingrAllergens;
 
 }

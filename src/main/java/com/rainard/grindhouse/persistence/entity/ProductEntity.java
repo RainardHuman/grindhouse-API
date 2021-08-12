@@ -17,25 +17,25 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long prodId;
 
-    @Column(name = "prod_name")
+    @Column(name = "prod_name", nullable = false, unique = true)
     private String prodName;
 
-    @Column(name = "prod_price")
+    @Column(name = "prod_price", nullable = false)
     private BigDecimal prodPrice;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "prod_desc", nullable = false)
+    private String prodDesc;
 
-    @Column(name = "has_milk")
+    @Column(name = "has_milk", nullable = false)
     private Boolean hasMilk;
 
-    @Column(name = "has_cream")
+    @Column(name = "has_cream", nullable = false)
     private Boolean hasCream;
 
-    @Column(name = "has_sugar")
+    @Column(name = "has_sugar", nullable = false)
     private Boolean hasSugar;
 
-    @Column(name = "has_condiments")
+    @Column(name = "has_condiments", nullable = false)
     private Boolean hasCondiments;
 
     @OneToMany(mappedBy = "product")

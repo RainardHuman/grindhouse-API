@@ -20,24 +20,21 @@ public class CustomerEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long custId;
 
-    @Column(name = "cust_name")
-    private String customerName;
+    @Column(name = "cust_name", nullable = false)
+    private String custName;
 
     @Column(name = "cell")
-    private String customerContact;
+    private String custContact;
 
-    @Column(name = "order_count")
+    @Column(name = "order_count", nullable = false)
     private Integer orderCount;
 
-    @Column(name = "isValid")
-    private Boolean isValid;
-
     @CreatedDate
-    @Column(name = "created")
+    @Column(name = "created", nullable = false)
     private Timestamp created;
 
     @LastModifiedDate
-    @Column(name = "updated")
+    @Column(name = "updated", nullable = false)
     private Timestamp updated;
 
     @OneToMany(mappedBy = "customer")
