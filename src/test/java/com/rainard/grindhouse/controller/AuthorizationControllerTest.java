@@ -2,14 +2,9 @@ package com.rainard.grindhouse.controller;
 
 
 import com.rainard.grindhouse.dto.request.LoginRequest;
-import com.rainard.grindhouse.dto.response.LoginResponse;
-
-import com.rainard.grindhouse.model.Problem;
-
 import com.rainard.grindhouse.service.AuthorisationServiceImpl;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,25 +13,18 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.stream.Stream;
 
 import static com.rainard.grindhouse.util.TestUtil.UTF_8;
-import static com.rainard.grindhouse.util.TestUtil.compareJsonValue;
 import static com.rainard.grindhouse.util.TestUtil.getContentAsString;
-import static com.rainard.grindhouse.util.TestUtil.objectMapper;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -89,7 +77,7 @@ class AuthorizationControllerTest {
     @Test
     void successLogout() throws Exception {
         mockMvc.perform(get(AUTH_LOGOUT_URL)
-                .header("Authorization","000000000x"))
+                .header("Authorization", "000000000x"))
             .andDo(print())
             .andExpect(status().isOk())
             .andReturn();

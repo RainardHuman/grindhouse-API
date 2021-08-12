@@ -1,9 +1,9 @@
 package com.rainard.grindhouse.model;
 
+import java.net.URI;
+
 import lombok.Builder;
 import lombok.Data;
-
-import java.net.URI;
 
 @Data
 @Builder

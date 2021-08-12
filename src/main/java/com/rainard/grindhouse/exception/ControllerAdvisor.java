@@ -2,8 +2,6 @@ package com.rainard.grindhouse.exception;
 
 import com.rainard.grindhouse.model.Problem;
 
-import lombok.SneakyThrows;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +18,8 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import lombok.SneakyThrows;
 
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {

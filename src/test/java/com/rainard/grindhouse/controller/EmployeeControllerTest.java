@@ -1,12 +1,9 @@
 package com.rainard.grindhouse.controller;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rainard.grindhouse.dto.request.EmployeeDTO;
-import com.rainard.grindhouse.dto.request.LoginRequest;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -41,10 +38,10 @@ class EmployeeControllerTest {
 
     private static Stream<Arguments> blankRegisterEmployeeDetails() {
         return Stream.of(
-            arguments("","f5384532", "password"),
+            arguments("", "f5384532", "password"),
             arguments("Rainard", "", "password"),
             arguments("Rainard", "f5384532", ""),
-            arguments(null,"f5384532", "password"),
+            arguments(null, "f5384532", "password"),
             arguments("Rainard", null, "password"),
             arguments("Rainard", "f5384532", null)
         );

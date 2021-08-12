@@ -1,11 +1,11 @@
 package com.rainard.grindhouse.util;
 
-import lombok.experimental.UtilityClass;
-
 import org.springframework.http.ResponseEntity;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class AuthUtil {

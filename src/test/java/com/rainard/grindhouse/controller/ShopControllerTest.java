@@ -2,11 +2,9 @@ package com.rainard.grindhouse.controller;
 
 
 import com.rainard.grindhouse.dto.request.ShopDTO;
-
 import com.rainard.grindhouse.service.ShopService;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,6 +40,12 @@ class ShopControllerTest {
     @Mock
     private ShopService shopService;
 
+    private static Stream<Arguments> blankNewShopDetails() {
+        return Stream.of(
+            arguments("", null),
+            arguments(null, null)
+        );
+    }
 
     @BeforeEach
     public void setUp() {
@@ -79,13 +83,6 @@ class ShopControllerTest {
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andReturn();
-    }
-
-    private static Stream<Arguments> blankNewShopDetails() {
-        return Stream.of(
-            arguments("", null),
-            arguments(null, null)
-        );
     }
 
 }

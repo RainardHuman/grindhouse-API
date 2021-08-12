@@ -4,9 +4,9 @@ import com.rainard.grindhouse.dto.request.ShopDTO;
 import com.rainard.grindhouse.persistence.entity.ShopEntity;
 import com.rainard.grindhouse.persistence.repository.ShopRepository;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
