@@ -10,6 +10,5 @@ import java.net.URI;
 public class Problem {
     String messageTitle;
     String detail;
-    Integer statusCode;
     URI instance;
 }

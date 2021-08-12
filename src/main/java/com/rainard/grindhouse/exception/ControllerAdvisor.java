@@ -10,11 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +24,8 @@ import java.util.Set;
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-    private static final String VALIDATION_ERROR = "Request Validation Error";
+    private static final String VALIDATION_ERROR = "Request validation error";
+    private static final String EMPLOYEE_NOT_FOUND_ERROR = "Employee not found error";
 
     private static String toFriendlyMessage(final List<ObjectError> errors) {
 
@@ -45,10 +48,22 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         Problem problem = Problem.builder()
             .instance(new URI(((ServletWebRequest) request).getRequest().getRequestURI()))
             .messageTitle(VALIDATION_ERROR)
-            .statusCode(HttpStatus.BAD_REQUEST.value())
             .detail(toFriendlyMessage(ex.getBindingResult().getAllErrors()))
             .build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
     }
+
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<Object> handleEmployeeNotFoundException(EmployeeNotFoundException employeeNotFoundException, WebRequest request) throws URISyntaxException {
+
+        final Problem problem = Problem.builder()
+            .instance(new URI(((ServletWebRequest) request).getRequest().getRequestURI()))
+            .messageTitle(EMPLOYEE_NOT_FOUND_ERROR)
+            .detail(employeeNotFoundException.getMessage())
+            .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
+    }
+
 }

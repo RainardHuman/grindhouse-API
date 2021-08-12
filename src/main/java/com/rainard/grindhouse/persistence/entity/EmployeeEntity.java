@@ -1,5 +1,10 @@
 package com.rainard.grindhouse.persistence.entity;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -14,12 +19,9 @@ import javax.persistence.OneToOne;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Setter;
-import lombok.ToString;
-
 @Entity
+@Getter
 @Setter
-@ToString
 public class EmployeeEntity {
 
     @Id
@@ -32,7 +34,7 @@ public class EmployeeEntity {
     @Column(name = "emp_password")
     private String empPassword;
 
-    @Column(name = "emp_name")
+    @Column(name = "emp_name", nullable = false)
     private String empName;
 
     @Column(name = "logged_in")
@@ -50,21 +52,12 @@ public class EmployeeEntity {
     private ShopEmployeeEntity shopEmployee;
 
     @OneToMany(mappedBy = "employee")
-    @ToString.Exclude
     private List<OrderEntity> orders;
 
     @OneToMany(mappedBy = "employee")
-    @ToString.Exclude
     private List<AuditLogEntity> auditLogEntities;
 
     @OneToOne(mappedBy = "employee")
     private ShopOwnerEntity shopOwner;
 
-    public List<AuditLogEntity> getAuditLogEntities() {
-        return auditLogEntities;
-    }
-
-    public List<OrderEntity> getOrders() {
-        return orders;
-    }
 }
