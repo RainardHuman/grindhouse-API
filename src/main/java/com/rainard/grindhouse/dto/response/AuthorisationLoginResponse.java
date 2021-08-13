@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class LoginResponse {
+public class AuthorisationLoginResponse {
     private String sessionToken;
     private String employeeName;
 }

@@ -19,7 +19,7 @@ public class IngredientEntity {
     @JoinColumn(name = "fk_prod_id")
     private ProductEntity product;
 
-    @Column(name = "ingr_name", nullable = false , unique = true)
+    @Column(name = "ingr_name", nullable = false, unique = true)
     private String ingrName;
 
     @Column(name = "ingr_desc", nullable = false)

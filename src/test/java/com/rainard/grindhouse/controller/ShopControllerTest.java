@@ -1,12 +1,10 @@
 package com.rainard.grindhouse.controller;
 
 
-import com.rainard.grindhouse.dto.request.ShopDTO;
-
-import com.rainard.grindhouse.service.ShopService;
+import com.rainard.grindhouse.dto.request.ShopNewDTO;
+import com.rainard.grindhouse.service.ShopServiceImpl;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,8 +38,14 @@ class ShopControllerTest {
     private ShopController shopController;
 
     @Mock
-    private ShopService shopService;
+    private ShopServiceImpl shopServiceImpl;
 
+    private static Stream<Arguments> blankNewShopDetails() {
+        return Stream.of(
+            arguments("", null),
+            arguments(null, null)
+        );
+    }
 
     @BeforeEach
     public void setUp() {
@@ -51,7 +55,7 @@ class ShopControllerTest {
     @Test
     void validNewShopRequest() throws Exception {
 
-        var newShop = ShopDTO.builder()
+        var newShop = ShopNewDTO.builder()
             .name("New Coffee Shop")
             .build();
 
@@ -68,7 +72,7 @@ class ShopControllerTest {
     @MethodSource("blankNewShopDetails")
     void invalidNewShopRequest(String name) throws Exception {
 
-        var newShop = ShopDTO.builder()
+        var newShop = ShopNewDTO.builder()
             .name(name)
             .build();
 
@@ -79,13 +83,6 @@ class ShopControllerTest {
             .andDo(print())
             .andExpect(status().isBadRequest())
             .andReturn();
-    }
-
-    private static Stream<Arguments> blankNewShopDetails() {
-        return Stream.of(
-            arguments("", null),
-            arguments(null, null)
-        );
     }
 
 }

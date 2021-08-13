@@ -1,12 +1,9 @@
 package com.rainard.grindhouse.controller;
 
-import com.rainard.grindhouse.dto.request.LoginRequest;
-import com.rainard.grindhouse.dto.response.LoginResponse;
+import com.rainard.grindhouse.dto.request.AuthorisationLoginDTO;
+import com.rainard.grindhouse.dto.response.AuthorisationLoginResponse;
 import com.rainard.grindhouse.service.AuthorisationService;
 
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,8 +25,8 @@ public class AuthorisationController {
 
     @PostMapping(path = "/auth/login", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public LoginResponse login(@Valid @RequestBody LoginRequest loginRequest) {
-        return authorisationService.login(loginRequest);
+    public AuthorisationLoginResponse login(@Valid @RequestBody AuthorisationLoginDTO authorisationLoginDTO) {
+        return authorisationService.login(authorisationLoginDTO);
     }
 
     @GetMapping(path = "/auth/logout")

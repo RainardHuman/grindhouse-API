@@ -1,10 +1,5 @@
 package com.rainard.grindhouse.persistence.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -19,16 +14,25 @@ import javax.persistence.OneToOne;
 import java.util.Date;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long empId;
 
-    @Column(name = "emp_number", nullable = false , unique = true)
+    @Column(name = "emp_number", nullable = false, unique = true)
     private String empNumber;
 
     @Column(name = "emp_password", nullable = false)

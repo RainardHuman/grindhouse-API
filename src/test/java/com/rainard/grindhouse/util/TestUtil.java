@@ -17,6 +17,6 @@ public class TestUtil {
     }
 
     public static ResultMatcher compareJsonValue(final String jsonPath, final String jsonValue) {
-        return jsonPath(String.format("%s%s","$.",jsonPath), is(jsonValue));
+        return jsonPath(String.format("%s%s", "$.", jsonPath), is(jsonValue));
     }
 }
