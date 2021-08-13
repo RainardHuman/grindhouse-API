@@ -1,12 +1,12 @@
 package com.rainard.grindhouse.service;
 
-import com.rainard.grindhouse.dto.request.LoginRequest;
-import com.rainard.grindhouse.dto.response.LoginResponse;
+import com.rainard.grindhouse.dto.request.AuthorisationLoginDTO;
+import com.rainard.grindhouse.dto.response.AuthorisationLoginResponse;
 
 import org.springframework.http.ResponseEntity;
 
 public interface AuthorisationService {
-    LoginResponse login(LoginRequest loginRequest);
+    AuthorisationLoginResponse login(AuthorisationLoginDTO authorisationLoginDTO);
 
     ResponseEntity<Object> logout(String sessionToken);
 }

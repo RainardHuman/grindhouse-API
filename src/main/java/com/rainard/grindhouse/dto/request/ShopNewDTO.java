@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShopDTO implements Serializable {
+public class ShopNewDTO implements Serializable {
     @NotBlank(message = "Shop name can not be null or blank")
     private String name;
 }

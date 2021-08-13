@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest implements Serializable {
+public class AuthorisationLoginDTO implements Serializable {
     @NotBlank(message = "employeeNumber can not be null or blank")
     private String employeeNumber;
     @NotBlank(message = "employeePassword can not be null or blank")

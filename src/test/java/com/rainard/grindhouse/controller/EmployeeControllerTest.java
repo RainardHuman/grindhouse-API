@@ -1,7 +1,9 @@
 package com.rainard.grindhouse.controller;
 
 
-import com.rainard.grindhouse.dto.request.EmployeeDTO;
+import com.rainard.grindhouse.dto.request.EmployeeRegisterDTO;
+import com.rainard.grindhouse.dto.request.EmployeeUpdatePasswordDTO;
+import com.rainard.grindhouse.dto.request.EmployeeUpdateStatusDTO;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class EmployeeControllerTest {
 
-    private final String EMPLOYEE_REGISTER_URL = "/employee/register";
-    private final String EMPLOYEE_UPDATE_URL = "/employee/update";
+    private final static String EMPLOYEE_REGISTER_URL = "/employee/register";
+    private final static String EMPLOYEE_UPDATE_PASSWORD_URL = "/employee/update/password";
+    private final static String EMPLOYEE_UPDATE_STATUS_URL = "/employee/update/status";
 
     private MockMvc mockMvc;
 
@@ -47,6 +50,14 @@ class EmployeeControllerTest {
         );
     }
 
+    private static Stream<Arguments> employeeURLs() {
+        return Stream.of(
+            arguments(EMPLOYEE_REGISTER_URL),
+            arguments(EMPLOYEE_UPDATE_PASSWORD_URL),
+            arguments(EMPLOYEE_UPDATE_STATUS_URL)
+        );
+    }
+
     @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(employeeController).build();
@@ -55,32 +66,78 @@ class EmployeeControllerTest {
     @Test
     void successEmployeeRegister() throws Exception {
 
-        var employeeDTO = EmployeeDTO.builder()
+        var employeeDTO = EmployeeRegisterDTO.builder()
             .employeeName("Rainard")
             .employeeNumber("f5384532")
             .employeePassword("password")
             .build();
 
         mockMvc.perform(post(EMPLOYEE_REGISTER_URL)
+                .header("Authorization", "0000000000x")
                 .characterEncoding(UTF_8)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getContentAsString(employeeDTO)))
             .andDo(print())
             .andExpect(status().isOk())
             .andReturn();
+    }
 
+    @Test
+    void successEmployeeUpdatePassword() throws Exception {
+
+        var employeeUpdatePasswordDTO = EmployeeUpdatePasswordDTO.builder()
+            .employeePassword("password")
+            .build();
+
+        mockMvc.perform(post(EMPLOYEE_UPDATE_PASSWORD_URL)
+                .header("Authorization", "0000000000x")
+                .characterEncoding(UTF_8)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getContentAsString(employeeUpdatePasswordDTO)))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andReturn();
+    }
+
+    @Test
+    void successEmployeeUpdateStatus() throws Exception {
+
+        var employeeUpdateStatusDTO = EmployeeUpdateStatusDTO.builder()
+            .loggedIn(false)
+            .build();
+
+        mockMvc.perform(post(EMPLOYEE_UPDATE_STATUS_URL)
+                .header("Authorization", "0000000000x")
+                .characterEncoding(UTF_8)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getContentAsString(employeeUpdateStatusDTO)))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andReturn();
+    }
+
+    @ParameterizedTest
+    @MethodSource("employeeURLs")
+    void failNoAuthorizationHeader(final String url) throws Exception {
+        mockMvc.perform(post(url)
+                .characterEncoding(UTF_8)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andReturn();
     }
 
     @ParameterizedTest
     @MethodSource("blankRegisterEmployeeDetails")
-    void registerWithBlankTest(String employeeName, String employeeNumber, String employeePassword) throws Exception {
-        var employeeDTO = EmployeeDTO.builder()
+    void failRegisterWithBlankTest(String employeeName, String employeeNumber, String employeePassword) throws Exception {
+        var employeeDTO = EmployeeRegisterDTO.builder()
             .employeeNumber(employeeNumber)
             .employeePassword(employeePassword)
             .employeeName(employeeName)
             .build();
 
         mockMvc.perform(post(EMPLOYEE_REGISTER_URL)
+                .header("Authorization", "0000000000x")
                 .characterEncoding(UTF_8)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(getContentAsString(employeeDTO))
@@ -91,14 +148,15 @@ class EmployeeControllerTest {
     }
 
     @Test
-    void invalidMinPasswordLength() throws Exception {
-        var employeeDTO = EmployeeDTO.builder()
+    void failMinRegistrationPasswordLength() throws Exception {
+        var employeeDTO = EmployeeRegisterDTO.builder()
             .employeeName("Rainard")
             .employeeNumber("f5384532")
             .employeePassword("passwor")
             .build();
 
         mockMvc.perform(post(EMPLOYEE_REGISTER_URL)
+                .header("Authorization", "0000000000x")
                 .characterEncoding(UTF_8)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getContentAsString(employeeDTO)))
@@ -107,4 +165,35 @@ class EmployeeControllerTest {
             .andReturn();
     }
 
+    @Test
+    void failMinUpdatePasswordLength() throws Exception {
+        var employeeUpdatePasswordDTO = EmployeeUpdatePasswordDTO.builder()
+            .employeePassword("passwor")
+            .build();
+
+        mockMvc.perform(post(EMPLOYEE_REGISTER_URL)
+                .header("Authorization", "0000000000x")
+                .characterEncoding(UTF_8)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getContentAsString(employeeUpdatePasswordDTO)))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andReturn();
+    }
+
+    @Test
+    void failNullUpdatePasswordLength() throws Exception {
+        var employeeUpdatePasswordDTO = EmployeeUpdatePasswordDTO.builder()
+            .employeePassword(null)
+            .build();
+
+        mockMvc.perform(post(EMPLOYEE_REGISTER_URL)
+                .header("Authorization", "0000000000x")
+                .characterEncoding(UTF_8)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getContentAsString(employeeUpdatePasswordDTO)))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andReturn();
+    }
 }

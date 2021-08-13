@@ -1,8 +1,8 @@
 package com.rainard.grindhouse.controller;
 
 
-import com.rainard.grindhouse.dto.request.ShopDTO;
-import com.rainard.grindhouse.service.ShopService;
+import com.rainard.grindhouse.dto.request.ShopNewDTO;
+import com.rainard.grindhouse.service.ShopServiceImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class ShopControllerTest {
     private ShopController shopController;
 
     @Mock
-    private ShopService shopService;
+    private ShopServiceImpl shopServiceImpl;
 
     private static Stream<Arguments> blankNewShopDetails() {
         return Stream.of(
@@ -55,7 +55,7 @@ class ShopControllerTest {
     @Test
     void validNewShopRequest() throws Exception {
 
-        var newShop = ShopDTO.builder()
+        var newShop = ShopNewDTO.builder()
             .name("New Coffee Shop")
             .build();
 
@@ -72,7 +72,7 @@ class ShopControllerTest {
     @MethodSource("blankNewShopDetails")
     void invalidNewShopRequest(String name) throws Exception {
 
-        var newShop = ShopDTO.builder()
+        var newShop = ShopNewDTO.builder()
             .name(name)
             .build();
 

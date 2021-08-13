@@ -1,6 +1,7 @@
 package com.rainard.grindhouse.service;
 
-import com.rainard.grindhouse.dto.request.LoginRequest;
+import com.rainard.grindhouse.dto.request.AuthorisationLoginDTO;
+import com.rainard.grindhouse.exception.EmployeeNotFoundException;
 import com.rainard.grindhouse.persistence.entity.EmployeeEntity;
 import com.rainard.grindhouse.persistence.repository.AuditLogRepository;
 import com.rainard.grindhouse.persistence.repository.EmployeeRepository;
@@ -16,12 +17,13 @@ import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class LoginServiceTest {
+class AuthorisationServiceTest {
 
     @InjectMocks
     private AuthorisationServiceImpl authorisationService;
@@ -35,7 +37,7 @@ class LoginServiceTest {
     @Test
     void loginValidUser() {
 
-        var employeeRainard = LoginRequest.builder()
+        var employeeRainard = AuthorisationLoginDTO.builder()
             .employeeNumber("F5384532")
             .employeePassword("password")
             .build();
@@ -56,6 +58,23 @@ class LoginServiceTest {
 
         assertEquals("Rainard", loginResponse.getEmployeeName());
         assertEquals("00000000000x", loginResponse.getSessionToken());
+
+    }
+
+    @Test
+    void failEmployeeLefa() {
+
+        var authorisationLoginDTO = AuthorisationLoginDTO.builder()
+            .employeeNumber("F1234576")
+            .employeePassword("password")
+            .build();
+
+        assertNotNull(employeeRepository);
+
+        when(employeeRepository.findByEmpNumberAndEmpPassword(anyString(), anyString()))
+            .thenReturn(null);
+
+        assertThrows(EmployeeNotFoundException.class, () -> authorisationService.login(authorisationLoginDTO));
 
     }
 

@@ -1,7 +1,7 @@
 package com.rainard.grindhouse.controller;
 
 
-import com.rainard.grindhouse.dto.request.LoginRequest;
+import com.rainard.grindhouse.dto.request.AuthorisationLoginDTO;
 import com.rainard.grindhouse.service.AuthorisationServiceImpl;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -60,7 +60,7 @@ class AuthorizationControllerTest {
     @Test
     void successLogin() throws Exception {
 
-        var loginRequest = LoginRequest.builder()
+        var loginRequest = AuthorisationLoginDTO.builder()
             .employeeNumber("f5384532")
             .employeePassword("password")
             .build();
@@ -86,7 +86,7 @@ class AuthorizationControllerTest {
     @ParameterizedTest
     @MethodSource("blankLoginRequestDetails")
     void loginWithBlankTest(String employeeNumber, String employeePassword) throws Exception {
-        var loginRequest = LoginRequest.builder()
+        var loginRequest = AuthorisationLoginDTO.builder()
             .employeeNumber(employeeNumber)
             .employeePassword(employeePassword)
             .build();

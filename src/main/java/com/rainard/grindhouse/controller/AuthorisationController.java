@@ -1,7 +1,7 @@
 package com.rainard.grindhouse.controller;
 
-import com.rainard.grindhouse.dto.request.LoginRequest;
-import com.rainard.grindhouse.dto.response.LoginResponse;
+import com.rainard.grindhouse.dto.request.AuthorisationLoginDTO;
+import com.rainard.grindhouse.dto.response.AuthorisationLoginResponse;
 import com.rainard.grindhouse.service.AuthorisationService;
 
 import org.springframework.http.MediaType;
@@ -25,8 +25,8 @@ public class AuthorisationController {
 
     @PostMapping(path = "/auth/login", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public LoginResponse login(@Valid @RequestBody LoginRequest loginRequest) {
-        return authorisationService.login(loginRequest);
+    public AuthorisationLoginResponse login(@Valid @RequestBody AuthorisationLoginDTO authorisationLoginDTO) {
+        return authorisationService.login(authorisationLoginDTO);
     }
 
     @GetMapping(path = "/auth/logout")
