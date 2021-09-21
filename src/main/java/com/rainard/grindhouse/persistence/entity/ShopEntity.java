@@ -1,5 +1,8 @@
 package com.rainard.grindhouse.persistence.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
@@ -7,8 +10,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import java.util.Date;
 import java.util.List;
@@ -18,26 +24,27 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Builder
+@Table(name = "shop")
 @NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class ShopEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long shopId;
+    private Long id;
 
-    @Column(name = "shop_name", nullable = false)
+    @Column(nullable = false)
     private String shopName;
 
     @CreatedDate
-    @Column(name = "created", nullable = false)
+    @Column(nullable = false)
     private Date created;
 
-    @Column(name = "in_operation", nullable = false)
-    private String inOperation;
+    @Column(nullable = false)
+    private Boolean inOperation;
 
-    @OneToOne(mappedBy = "shop")
+    @ManyToOne(optional = false)
     private ShopOwnerEntity shopOwner;
 
     @OneToMany(mappedBy = "shop")

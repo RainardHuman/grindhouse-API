@@ -5,11 +5,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import java.util.Date;
 import java.util.List;
@@ -21,47 +23,43 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "employee")
+@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class EmployeeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long empId;
+    private Long id;
 
-    @Column(name = "emp_number", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String empNumber;
 
-    @Column(name = "emp_password", nullable = false)
+    @Column(nullable = false)
     private String empPassword;
 
-    @Column(name = "emp_name", nullable = false)
+    @Column(nullable = false)
     private String empName;
 
-    @Column(name = "logged_in", nullable = false)
+    @Column(nullable = false)
     private Boolean isLoggedIn;
 
     @CreatedDate
-    @Column(name = "created", nullable = false)
+    @Column(nullable = false)
     private Date created;
 
     @LastModifiedDate
-    @Column(name = "updated", nullable = false)
+    @Column(nullable = false)
     private Date updated;
-
-    @OneToOne(mappedBy = "employee")
-    private ShopEmployeeEntity shopEmployee;
 
     @OneToMany(mappedBy = "employee")
     private List<OrderEntity> orders;
 
-    @OneToMany(mappedBy = "employee")
-    private List<AuditLogEntity> auditLogEntities;
+    @OneToOne(mappedBy = "employee", orphanRemoval = true)
+    private ShopEmployeeEntity shopEmployee;
 
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(mappedBy = "employee", orphanRemoval = true)
     private ShopOwnerEntity shopOwner;
 
 }

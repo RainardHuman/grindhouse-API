@@ -1,5 +1,10 @@
 package com.rainard.grindhouse.persistence.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import lombok.Setter;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -9,16 +14,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
+@Table(name = "customer")
+@NoArgsConstructor
+@Getter
+@Setter
 public class CustomerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long custId;
+    private Long id;
 
     @Column(name = "cust_name", nullable = false)
     private String custName;

@@ -1,41 +1,50 @@
 package com.rainard.grindhouse.persistence.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
+@Table(name = "product")
+@NoArgsConstructor
+@Getter
+@Setter
 public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long prodId;
+    private Long id;
 
-    @Column(name = "prod_name", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String prodName;
 
-    @Column(name = "prod_price", nullable = false)
+    @Column(nullable = false)
     private BigDecimal prodPrice;
 
-    @Column(name = "prod_desc", nullable = false)
+    @Column(nullable = false)
     private String prodDesc;
 
-    @Column(name = "has_milk", nullable = false)
+    @Column(nullable = false)
     private Boolean hasMilk;
 
-    @Column(name = "has_cream", nullable = false)
+    @Column(nullable = false)
     private Boolean hasCream;
 
-    @Column(name = "has_sugar", nullable = false)
+    @Column(nullable = false)
     private Boolean hasSugar;
 
-    @Column(name = "has_condiments", nullable = false)
+    @Column(nullable = false)
     private Boolean hasCondiments;
 
     @OneToMany(mappedBy = "product")

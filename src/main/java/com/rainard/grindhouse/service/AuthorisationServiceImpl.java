@@ -34,13 +34,12 @@ public class AuthorisationServiceImpl implements AuthorisationService {
             throw new EmployeeNotFoundException("Failed login: employee not found");
         }
 
-        auditLogRepository.save(AuditLogEntity.builder()
-            .employee(employeeEntity)
-            .actionType("Login")
-            .created(Timestamp.from(Instant.now()))
-            .note(String.format("%s successfully logged in", employeeEntity.getEmpName()))
-            .build()
-        );
+//        auditLogRepository.save(AuditLogEntity.builder()
+//            .actionType("Login")
+//            .created(Timestamp.from(Instant.now()))
+//            .note(String.format("%s successfully logged in", employeeEntity.getEmpName()))
+//            .build()
+//        );
 
         return AuthorisationLoginResponse.builder()
             .employeeName(employeeEntity.getEmpName())

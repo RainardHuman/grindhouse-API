@@ -2,6 +2,10 @@ package com.rainard.grindhouse.persistence.entity;
 
 import com.rainard.grindhouse.enums.RoleEnum;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,22 +14,27 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "shop_employee")
+@NoArgsConstructor
+@Getter
+@Setter
 public class ShopEmployeeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long shopEmpId;
+    private Long id;
 
-    @Column(name = "role", nullable = false)
+    @Column(nullable = false)
     private RoleEnum role;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "fk_emp_id")
+    @OneToOne
+    @JoinColumn(name = "fk_emp_id", referencedColumnName = "id")
     private EmployeeEntity employee;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "fk_shop_id")
+    @ManyToOne
+    @JoinColumn(name = "fk_shop_id", referencedColumnName = "id")
     private ShopEntity shop;
 }

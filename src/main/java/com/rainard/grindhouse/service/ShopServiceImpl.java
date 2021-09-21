@@ -18,11 +18,11 @@ public class ShopServiceImpl implements ShopService {
 
     public ResponseEntity<Object> newShop(final ShopNewDTO shopNewDTO) {
 
-        var shopEntity = ShopEntity.builder()
-            .shopName(shopNewDTO.getName())
-            .build();
-
-        shopRepository.save(shopEntity);
+//        var shopEntity = ShopEntity.builder()
+//            .shopName(shopNewDTO.getName())
+//            .build();
+//
+//        shopRepository.save(shopEntity);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
