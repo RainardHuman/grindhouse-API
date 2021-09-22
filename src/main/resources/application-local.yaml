@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    platform: mysql
+    dbcp2.driver-class-name: com.mysql.cj.jdbc.Driver
+    url: 'jdbc:mysql://${ETS_DB_HOST}:${ETS_DB_PORT}/grindhouse'
+    username: ${ETS_DB_USER}
+    password: ${ETS_DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      generate-ddl: true
+  redis:
+    host: localhost
+    port: 3679

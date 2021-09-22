@@ -1,10 +1,5 @@
 package com.rainard.grindhouse.persistence.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import lombok.Setter;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -19,6 +14,10 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "customer")
 @NoArgsConstructor
@@ -30,21 +29,21 @@ public class CustomerEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "cust_name", nullable = false)
+    @Column(nullable = false)
     private String custName;
 
-    @Column(name = "cell")
+    @Column
     private String custContact;
 
-    @Column(name = "order_count", nullable = false)
+    @Column(nullable = false)
     private Integer orderCount;
 
     @CreatedDate
-    @Column(name = "created", nullable = false)
+    @Column(nullable = false)
     private Timestamp created;
 
     @LastModifiedDate
-    @Column(name = "updated", nullable = false)
+    @Column(nullable = false)
     private Timestamp updated;
 
     @OneToMany(mappedBy = "customer")

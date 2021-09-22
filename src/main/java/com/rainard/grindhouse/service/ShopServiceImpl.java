@@ -1,7 +1,6 @@
 package com.rainard.grindhouse.service;
 
 import com.rainard.grindhouse.dto.request.ShopNewDTO;
-import com.rainard.grindhouse.persistence.entity.ShopEntity;
 import com.rainard.grindhouse.persistence.repository.ShopRepository;
 
 import org.springframework.http.HttpStatus;

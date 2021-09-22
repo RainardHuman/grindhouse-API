@@ -1,12 +1,9 @@
 package com.rainard.grindhouse.persistence.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +18,10 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "orders")
@@ -47,7 +48,7 @@ public class OrderEntity {
     @Column(nullable = false)
     private Timestamp updated;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_cust_id", referencedColumnName = "id")
     private CustomerEntity customer;
 
@@ -55,9 +56,9 @@ public class OrderEntity {
     @JoinColumn(name = "fk_emp_id", referencedColumnName = "id")
     private EmployeeEntity employee;
 
-    @OneToMany(mappedBy = "order", orphanRemoval = true)
+    @OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<ItemEntity> items;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne(mappedBy = "order", cascade = CascadeType.PERSIST)
     private AuditLogEntity auditLogEntity;
 }
