@@ -1,7 +1,7 @@
 package com.rainard.grindhouse.controller;
 
 import com.rainard.grindhouse.dto.request.ShopNewDTO;
-import com.rainard.grindhouse.service.ShopService;
+import com.rainard.grindhouse.service.interfaces.ShopService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

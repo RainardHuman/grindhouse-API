@@ -1,4 +1,4 @@
-package com.rainard.grindhouse.service;
+package com.rainard.grindhouse.service.interfaces;
 
 import com.rainard.grindhouse.dto.request.AuthorisationLoginDTO;
 import com.rainard.grindhouse.dto.response.AuthorisationLoginResponse;

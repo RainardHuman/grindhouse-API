@@ -2,7 +2,7 @@ package com.rainard.grindhouse.controller;
 
 import com.rainard.grindhouse.dto.request.AuthorisationLoginDTO;
 import com.rainard.grindhouse.dto.response.AuthorisationLoginResponse;
-import com.rainard.grindhouse.service.AuthorisationService;
+import com.rainard.grindhouse.service.interfaces.AuthorisationService;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +33,10 @@ public class AuthorisationController {
     public ResponseEntity<Object> logout(
         @RequestHeader("Authorization") String sessionToken) {
         return authorisationService.logout(sessionToken);
+    }
+
+    @GetMapping(path = "/auth")
+    public ResponseEntity<Object> test() {
+        return ResponseEntity.ok("Fucking Working");
     }
 }
