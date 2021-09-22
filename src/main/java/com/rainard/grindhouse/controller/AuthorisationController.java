@@ -37,6 +37,6 @@ public class AuthorisationController {
 
     @GetMapping(path = "/auth")
     public ResponseEntity<Object> test() {
-        return ResponseEntity.ok("Fucking Working");
+        return ResponseEntity.ok("Fucking Workin");
     }
 }
